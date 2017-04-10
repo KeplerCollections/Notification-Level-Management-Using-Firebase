@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/m_update_password"
+        android:enabled="true"
+        android:icon="@drawable/ic_action_update_password"
+        android:title="@string/update_password"
+        app:showAsAction="collapseActionView|ifRoom"></item>
+
+    <item
+        android:id="@+id/m_logout"
+        android:enabled="true"
+        android:icon="@drawable/ic_action_logout"
+        android:title="@string/logout"
+        app:showAsAction="collapseActionView|ifRoom"></item>
+
+    <item android:id="@+id/search"
+        android:title="@string/search_title"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+
+</menu>

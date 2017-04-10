@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/m_profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile"
+        app:showAsAction="collapseActionView|ifRoom"></item>
+
+    <item
+        android:id="@+id/m_update_password"
+        android:enabled="true"
+        android:title="@string/update_password"
+        app:showAsAction="never"></item>
+    <item
+        android:id="@+id/m_update_email"
+        android:enabled="true"
+        android:title="@string/update_email"
+        app:showAsAction="never"></item>
+    <item
+        android:id="@+id/m_logout"
+        android:enabled="true"
+        android:title="@string/logout"
+        app:showAsAction="never"></item>
+</menu>
