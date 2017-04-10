@@ -31,7 +31,7 @@ public class Students extends BaseActivity implements OnLoadMore {
     @BindView(R.id.search_students)
     EditText search_students;
     private int page = 1;
-    private com.kepler.notificationsystem.support.Student student;
+    private com.kepler.notificationsystem.dao.Student student;
     private StudentAdapter studentAdapter;
 
     @Override
@@ -44,8 +44,7 @@ public class Students extends BaseActivity implements OnLoadMore {
         recycler_view.setEmptyView(recycler_empty_view);
 
         Bundle bundle = getIntent().getExtras();
-        student = new com.kepler.notificationsystem.support.Student();
-        student.setBatch(bundle.getString(Params.BATCH, null));
+        student = new com.kepler.notificationsystem.dao.Student(null, null, null, null, null, bundle.getString(Params.BATCH, null));
         load();
     }
 
@@ -64,18 +63,19 @@ public class Students extends BaseActivity implements OnLoadMore {
                 Gson gson = new Gson();
                 StudentParent fromJson = gson.fromJson(responseBody.toString(), StudentParent.class);
                 if (fromJson.isStatus()) {
-                    if(studentAdapter==null){
-                        studentAdapter=new StudentAdapter(getApplicationContext(), Students.this);
+                    if (studentAdapter == null) {
+                        studentAdapter = new StudentAdapter(getApplicationContext(), Students.this);
                         studentAdapter.addAll(fromJson.getData());
                         recycler_view.setAdapter(studentAdapter);
-                    }else{
+                    } else {
                         studentAdapter.addAll(fromJson.getData());
                         studentAdapter.notifyDataSetChanged();
                     }
                     page++;
-                }else{
-                    Utils.toast(getApplicationContext(),fromJson.getMessage());
-                }        }
+                } else {
+                    Utils.toast(getApplicationContext(), fromJson.getMessage());
+                }
+            }
 
             @Override
             public void onFinish() {

@@ -1,6 +1,7 @@
 package com.kepler.notificationsystem.admin.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.kepler.notificationsystem.R;
 import com.kepler.notificationsystem.dao.Student;
 import com.kepler.notificationsystem.support.OnLoadMore;
+import com.kepler.notificationsystem.support.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +91,8 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentH
             _more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Bundle bundle=new Bundle()
+                    Utils.startActivity();
                 }
             });
             if (students.size() % com.kepler.notificationsystem.services.Student.OFFSET == 0

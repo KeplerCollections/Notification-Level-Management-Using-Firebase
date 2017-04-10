@@ -16,6 +16,8 @@ public class Student {
     @Expose
     private String emailid;
     @Expose
+    private String password;
+    @Expose
     private String rn;
     @Expose
     private String cn;
@@ -23,6 +25,19 @@ public class Student {
     private String batch;
     @Expose
     private String device_id;
+
+    public Student(String name, String emailid, String password, String rn, String cn, String batch) {
+        this.name = name;
+        this.emailid = emailid;
+        this.password = password;
+        this.rn = rn;
+        this.cn = cn;
+        this.batch = batch;
+    }
+
+    public Student (){
+
+    }
 
     public String getId() {
         return id;
@@ -51,4 +66,6 @@ public class Student {
     public String getDevice_id() {
         return device_id;
     }
+
+
 }

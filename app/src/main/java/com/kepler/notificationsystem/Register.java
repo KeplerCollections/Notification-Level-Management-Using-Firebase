@@ -17,11 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.kepler.notificationsystem.dao.Student;
 import com.kepler.notificationsystem.support.Logger;
 import com.kepler.notificationsystem.support.OnYearSelect;
 import com.kepler.notificationsystem.support.Params;
 import com.kepler.notificationsystem.services.SimpleNetworkHandler;
-import com.kepler.notificationsystem.support.Student;
 import com.kepler.notificationsystem.support.Utils;
 
 import org.json.JSONObject;
@@ -119,6 +119,7 @@ public class Register extends BaseActivity implements View.OnClickListener {
         final int year = Calendar.getInstance().get(Calendar.YEAR);
         np.setMinValue(year - 4);
         np.setMaxValue(year + 4);
+        np.setValue(year);
         np.setWrapSelectorWheel(false);
         builder.setPositiveButton(R.string.select, new DialogInterface.OnClickListener() {
             @Override

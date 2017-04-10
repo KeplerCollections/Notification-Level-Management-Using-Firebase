@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/loading"
+                android:textAllCaps="true"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
@@ -37,7 +38,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:textAllCaps="true"
                 android:text="@string/loading"
                 android:textColor="@android:color/darker_gray" />
 

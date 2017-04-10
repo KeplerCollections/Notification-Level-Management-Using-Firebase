@@ -58,6 +58,7 @@
     <string name="select_batch">Select Batch Year</string>
     <string name="student_list">Students List</string>
     <string name="select">Select</string>
+    <string name="edit_profile_img">Edit Pic</string>
 
     <array name="type">
         <item>@string/student</item>
@@ -66,7 +67,7 @@
     <array name="drawer_items">
         <item>@string/home</item>
         <item>@string/send_message</item>
-        <item>@string/student_list</item>
+        <item>@string/search_title</item>
         <item>@string/settings</item>
     </array>
 </resources>

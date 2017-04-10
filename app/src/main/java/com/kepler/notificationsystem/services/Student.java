@@ -19,10 +19,10 @@ public class Student {
     private static final String REGISTER = "register";
     public static final int OFFSET = 30;
 
-    public static void register(Context context, com.kepler.notificationsystem.support.Student student, SimpleNetworkHandler simpleNetworkHandler) {
+    public static void register(Context context, com.kepler.notificationsystem.dao.Student student, SimpleNetworkHandler simpleNetworkHandler) {
         RequestParams requestParams = new RequestParams();
         requestParams.add(Params.NAME, student.getName());
-        requestParams.add(Params.USERNAME, student.getUsername());
+        requestParams.add(Params.EMAILID, student.getEmailid());
         requestParams.add(Params.RN, student.getRn());
         requestParams.add(Params.CN, student.getCn());
         requestParams.add(Params.BATCH, student.getBatch());
@@ -43,8 +43,8 @@ public class Student {
 
     public static void updateEmailId(Context context, String new_email, SimpleNetworkHandler simpleNetworkHandler) {
         RequestParams requestParams = new RequestParams();
-        requestParams.add(Params.USERNAME, (context.getSharedPreferences(Config.SHARED_PREF_USER, 0)).getString(Params.USER, null));
-        requestParams.add(Params.NEW_USERNAME, new_email);
+        requestParams.add(Params.EMAILID, (context.getSharedPreferences(Config.SHARED_PREF_USER, 0)).getString(Params.USER, null));
+        requestParams.add(Params.NEW_EMAILID, new_email);
         requestParams.add(Params.ACTION_TYPE, String.valueOf(UPDATE_EMAIL));
         requestParams.add(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
         requestParams.add(Params.ACTION, UPDATE);
@@ -53,7 +53,7 @@ public class Student {
 
     public static void updateContactNumber(Context context, String email, String contact, SimpleNetworkHandler simpleNetworkHandler) {
         RequestParams requestParams = new RequestParams();
-        requestParams.add(Params.USERNAME, email);
+        requestParams.add(Params.EMAILID, email);
         requestParams.add(Params.CN, contact);
         requestParams.add(Params.ACTION_TYPE, String.valueOf(UPDATE_PASS));
         requestParams.add(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
@@ -61,13 +61,15 @@ public class Student {
         load(null, requestParams, simpleNetworkHandler);
     }
 
-    public static void select(Context context, com.kepler.notificationsystem.support.Student student, SimpleNetworkHandler simpleNetworkHandler,int page) {
+    public static void select(Context context, com.kepler.notificationsystem.dao.Student student, SimpleNetworkHandler simpleNetworkHandler, int page) {
         RequestParams requestParams = new RequestParams();
         if (student.getName() != null) {
             requestParams.add(Params.NAME, student.getName());
-        }
-        if (student.getBatch() != null)
+        }else if (student.getBatch() != null) {
             requestParams.add(Params.BATCH, student.getBatch());
+        }else if (student.getEmailid() != null) {
+            requestParams.add(Params.EMAILID, student.getEmailid());
+        }
         requestParams.add(Params.OFFSET, String.valueOf(OFFSET));
         requestParams.add(Params.PAGE,String.valueOf(page));
         requestParams.add(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));

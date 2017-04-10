@@ -33,7 +33,7 @@ public class SearchResultsActivity extends BaseActivity implements OnLoadMore {
     LinearLayout recycler_empty_view;
     private int page = 1;
     private StudentAdapter studentAdapter;
-    private com.kepler.notificationsystem.support.Student student;
+    private com.kepler.notificationsystem.dao.Student student;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +72,7 @@ public class SearchResultsActivity extends BaseActivity implements OnLoadMore {
             String query = intent.getStringExtra(SearchManager.QUERY);
             //use the query to search your data somehow
             search_for.setText("You are searching for \"" + query + "\"");
-            student = new com.kepler.notificationsystem.support.Student();
-            student.setName(query);
+            student = new com.kepler.notificationsystem.dao.Student(query,null,null,null,null,null);
             load();
         } else {
             onBackPressed();
