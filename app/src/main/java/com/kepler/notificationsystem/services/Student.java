@@ -5,8 +5,6 @@ import android.content.Context;
 import com.kepler.notificationsystem.notification.Config;
 import com.kepler.notificationsystem.support.GenerateHashKey;
 import com.kepler.notificationsystem.support.Params;
-import com.kepler.notificationsystem.support.SimpleNetworkHandler;
-import com.kepler.notificationsystem.support.Utils;
 import com.loopj.android.http.RequestParams;
 
 /**

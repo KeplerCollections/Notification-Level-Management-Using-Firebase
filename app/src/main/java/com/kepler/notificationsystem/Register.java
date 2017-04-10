@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.kepler.notificationsystem.support.Logger;
 import com.kepler.notificationsystem.support.OnYearSelect;
 import com.kepler.notificationsystem.support.Params;
-import com.kepler.notificationsystem.support.SimpleNetworkHandler;
+import com.kepler.notificationsystem.services.SimpleNetworkHandler;
 import com.kepler.notificationsystem.support.Student;
 import com.kepler.notificationsystem.support.Utils;
 

@@ -17,12 +17,8 @@ import com.kepler.notificationsystem.dao.StudentParent;
 import com.kepler.notificationsystem.services.Student;
 import com.kepler.notificationsystem.support.EmptyRecyclerView;
 import com.kepler.notificationsystem.support.OnLoadMore;
-import com.kepler.notificationsystem.support.Params;
-import com.kepler.notificationsystem.support.SimpleNetworkHandler;
+import com.kepler.notificationsystem.services.SimpleNetworkHandler;
 import com.kepler.notificationsystem.support.Utils;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import butterknife.BindView;
 import cz.msebera.android.httpclient.Header;

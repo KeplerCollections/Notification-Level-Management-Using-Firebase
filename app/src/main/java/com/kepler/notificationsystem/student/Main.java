@@ -31,7 +31,7 @@ import com.kepler.notificationsystem.notification.NotificationUtils;
 import com.kepler.notificationsystem.services.Student;
 import com.kepler.notificationsystem.support.Logger;
 import com.kepler.notificationsystem.support.Params;
-import com.kepler.notificationsystem.support.SimpleNetworkHandler;
+import com.kepler.notificationsystem.services.SimpleNetworkHandler;
 import com.kepler.notificationsystem.support.Utils;
 
 import org.json.JSONException;
