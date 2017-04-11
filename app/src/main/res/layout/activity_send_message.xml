@@ -1,13 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_send_message"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="none"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.kepler.notificationsystem.admin.SendMessage">
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@android:style/TextAppearance.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:hint="@string/title"
+            android:lines="1"
+            android:padding="5dp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_drawable"
+            android:hint="@string/title" />
+
+        <TextView
+            style="@android:style/TextAppearance.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:hint="@string/message"
+            android:lines="1"
+            android:padding="5dp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_drawable"
+            android:gravity="top"
+            android:hint="@string/message"
+            android:lines="5" />
+
+        <TextView
+            style="@android:style/TextAppearance.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:hint="@string/select_type"
+            android:lines="1"
+            android:padding="5dp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_drawable"
+            android:entries="@array/message_type_array" />
+
+        <TextView
+            style="@android:style/TextAppearance.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:hint="@string/upload_file"
+            android:lines="1"
+            android:padding="5dp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_drawable"
+            android:drawableRight="@android:drawable/ic_menu_upload"
+            android:gravity="center_vertical"
+            android:hint="@string/upload_file"
+            android:lines="1" />
+
+        <TextView
+            style="@android:style/TextAppearance.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:hint="@string/send_to"
+            android:lines="1"
+            android:padding="5dp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_drawable"
+            android:entries="@array/send_to" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/send_message"
+            android:background="@drawable/button_drawable"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</ScrollView>

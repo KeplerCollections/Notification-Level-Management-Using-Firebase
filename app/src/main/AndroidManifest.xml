@@ -15,7 +15,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Login" />
         <activity android:name=".Register" />
-        <activity android:name=".student.Profile" />
         <activity android:name=".student.Main" />
         <activity
             android:name=".Splash"
@@ -49,9 +48,12 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-        <activity android:name=".admin.Students" />
+        <activity
+            android:name=".admin.Students"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".admin.SendMessage" />
-        <activity android:name=".admin.Profile"></activity>
+        <activity android:name=".student.Update" />
+        <activity android:name=".student.Profile"></activity>
     </application>
 
 </manifest>

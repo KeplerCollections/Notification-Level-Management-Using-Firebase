@@ -101,7 +101,10 @@ public class Main extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.m_profile:
-                Utils.startActivity(this, Profile.class, null, false);
+                Bundle bundle = new Bundle();
+                bundle.putString(Params.EMAILID, pref.getString(Params.USER, null));
+                bundle.putBoolean(Params.IS_STUDENT, true);
+                Utils.startActivity(this, Profile.class, bundle, false);
                 return true;
             case R.id.m_update_password:
                 updatePassword();
@@ -209,7 +212,7 @@ public class Main extends BaseActivity {
                     Utils.toast(getApplicationContext(), R.string.email_error_msg);
                     return;
                 }
-                Student.updateEmailId(getApplicationContext(), input.getText().toString(), new SimpleNetworkHandler() {
+                Student.updateEmailId(getApplicationContext(), pref.getString(Params.EMAILID,null),input.getText().toString(), new SimpleNetworkHandler() {
                     ProgressDialog progressDialog;
 
                     @Override
@@ -290,7 +293,6 @@ public class Main extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
             return;

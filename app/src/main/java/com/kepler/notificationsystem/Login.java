@@ -62,12 +62,14 @@ public class Login extends BaseActivity implements View.OnClickListener {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
-                    username.setText("");
+                    username.setText("amitjaiswal002@gmail.com");
+                    password.setText("qwerty");
                     username.setEnabled(true);
                     forgot.setEnabled(true);
                     register.setEnabled(true);
                 } else {
                     username.setText("developer.amitjaiswal@gmail.com");
+                    password.setText("123456");
                     username.setEnabled(false);
                     forgot.setEnabled(false);
                     register.setEnabled(false);

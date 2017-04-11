@@ -30,7 +30,13 @@ public class Utils {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
+    }
 
+    public static void startActivityForResult(Activity activity, Class<? extends BaseActivity> activityClass, Bundle bundle, int requestCode) {
+        Intent intent = new Intent(activity, activityClass);
+        if (bundle != null)
+            intent.putExtras(bundle);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     public static void startActivity(Context context, Class<? extends BaseActivity> activityClass, Bundle bundle, boolean finish, String actions) {

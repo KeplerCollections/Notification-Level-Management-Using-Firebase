@@ -131,8 +131,6 @@ public class Register extends BaseActivity implements View.OnClickListener {
         AlertDialog d = builder.create();
         d.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         d.show();
-
-
     }
 
     private void register() {
@@ -152,7 +150,7 @@ public class Register extends BaseActivity implements View.OnClickListener {
                             Utils.toast(getApplicationContext(), task.getException().getMessage());
                         } else {
                             final Student user = new Student(String.valueOf(name.getText()), String.valueOf(username.getText()),
-                                    String.valueOf(password.getText()), String.valueOf(rn.getText()), String.valueOf(cn.getText()), select_batch.getText().toString());
+                                    String.valueOf(password.getText()), String.valueOf(rn.getText()), String.valueOf(cn.getText()), select_batch.getText().toString(), null);
                             com.kepler.notificationsystem.services.Student.register(getApplicationContext(), user, new SimpleNetworkHandler() {
 
                                 @Override

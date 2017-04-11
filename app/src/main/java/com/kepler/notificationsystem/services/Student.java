@@ -12,8 +12,8 @@ import com.loopj.android.http.RequestParams;
  */
 
 public class Student {
-    private static final int UPDATE_EMAIL = 0;
-    private static final int UPDATE_PASS = 1;
+    private static final int UPDATE_EMAIL = 1;
+    private static final int UPDATE_ALL = 2;
     private static final String UPDATE = "update";
     private static final String SELECT = "select";
     private static final String REGISTER = "register";
@@ -41,21 +41,26 @@ public class Student {
 //        load(null, requestParams, simpleNetworkHandler);
 //    }
 
-    public static void updateEmailId(Context context, String new_email, SimpleNetworkHandler simpleNetworkHandler) {
+    public static void updateEmailId(Context context, String email_id, String new_email_id, SimpleNetworkHandler simpleNetworkHandler) {
+        if (email_id == null)
+            return;
         RequestParams requestParams = new RequestParams();
-        requestParams.add(Params.EMAILID, (context.getSharedPreferences(Config.SHARED_PREF_USER, 0)).getString(Params.USER, null));
-        requestParams.add(Params.NEW_EMAILID, new_email);
+        requestParams.add(Params.EMAILID, email_id);
+        requestParams.add(Params.NEW_EMAILID, new_email_id);
         requestParams.add(Params.ACTION_TYPE, String.valueOf(UPDATE_EMAIL));
         requestParams.add(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
         requestParams.add(Params.ACTION, UPDATE);
         load(null, requestParams, simpleNetworkHandler);
     }
 
-    public static void updateContactNumber(Context context, String email, String contact, SimpleNetworkHandler simpleNetworkHandler) {
+    public static void update(Context context, com.kepler.notificationsystem.dao.Student student, SimpleNetworkHandler simpleNetworkHandler) {;
         RequestParams requestParams = new RequestParams();
-        requestParams.add(Params.EMAILID, email);
-        requestParams.add(Params.CN, contact);
-        requestParams.add(Params.ACTION_TYPE, String.valueOf(UPDATE_PASS));
+        requestParams.add(Params.ID, student.getId());
+        requestParams.add(Params.NAME, student.getName());
+        requestParams.add(Params.RN, student.getRn());
+        requestParams.add(Params.CN, student.getCn());
+        requestParams.add(Params.BATCH, student.getBatch());
+        requestParams.add(Params.ACTION_TYPE, String.valueOf(UPDATE_ALL));
         requestParams.add(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
         requestParams.add(Params.ACTION, UPDATE);
         load(null, requestParams, simpleNetworkHandler);
@@ -65,13 +70,13 @@ public class Student {
         RequestParams requestParams = new RequestParams();
         if (student.getName() != null) {
             requestParams.add(Params.NAME, student.getName());
-        }else if (student.getBatch() != null) {
+        } else if (student.getBatch() != null) {
             requestParams.add(Params.BATCH, student.getBatch());
-        }else if (student.getEmailid() != null) {
+        } else if (student.getEmailid() != null) {
             requestParams.add(Params.EMAILID, student.getEmailid());
         }
         requestParams.add(Params.OFFSET, String.valueOf(OFFSET));
-        requestParams.add(Params.PAGE,String.valueOf(page));
+        requestParams.add(Params.PAGE, String.valueOf(page));
         requestParams.add(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
         requestParams.add(Params.ACTION, SELECT);
         load(null, requestParams, simpleNetworkHandler);

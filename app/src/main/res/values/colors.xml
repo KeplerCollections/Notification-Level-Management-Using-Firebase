@@ -3,5 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="light_black">#50000000</color>
+    <color name="trans_light_black">#50000000</color>
+    <color name="trans_med_black">#99000000</color>
+    <color name="trans_dark_black">#D9000000</color>
+    <color name="olive">#31AF91</color>
 </resources>

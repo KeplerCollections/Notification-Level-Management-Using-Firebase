@@ -58,7 +58,18 @@
     <string name="select_batch">Select Batch Year</string>
     <string name="student_list">Students List</string>
     <string name="select">Select</string>
-    <string name="edit_profile_img">Edit Pic</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="upload_new_pic">Upload New Pic</string>
+    <string name="password_demo">********</string>
+    <string name="title">Title</string>
+    <string name="message">Message</string>
+    <string name="select_type">Select Message Type</string>
+    <string name="normal">Normal</string>
+    <string name="important">Important</string>
+    <string name="warning">Warning</string>
+    <string name="upload_file">Select File</string>
+    <string name="custom">Custom</string>
+    <string name="send_to">Send To</string>
 
     <array name="type">
         <item>@string/student</item>
@@ -68,6 +79,14 @@
         <item>@string/home</item>
         <item>@string/send_message</item>
         <item>@string/search_title</item>
-        <item>@string/settings</item>
+    </array>
+    <array name="message_type_array">
+        <item>@string/normal</item>
+        <item>@string/important</item>
+        <item>@string/warning</item>
+    </array>
+    <array name="send_to">
+        <item>@string/send_message_to_all</item>
+        <item>@string/custom</item>
     </array>
 </resources>

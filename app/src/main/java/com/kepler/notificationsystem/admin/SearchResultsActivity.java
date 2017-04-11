@@ -15,15 +15,17 @@ import com.kepler.notificationsystem.R;
 import com.kepler.notificationsystem.admin.adapter.StudentAdapter;
 import com.kepler.notificationsystem.dao.StudentParent;
 import com.kepler.notificationsystem.services.Student;
+import com.kepler.notificationsystem.student.Profile;
 import com.kepler.notificationsystem.support.EmptyRecyclerView;
-import com.kepler.notificationsystem.support.OnLoadMore;
+import com.kepler.notificationsystem.support.OnViewActionListener;
 import com.kepler.notificationsystem.services.SimpleNetworkHandler;
+import com.kepler.notificationsystem.support.Params;
 import com.kepler.notificationsystem.support.Utils;
 
 import butterknife.BindView;
 import cz.msebera.android.httpclient.Header;
 
-public class SearchResultsActivity extends BaseActivity implements OnLoadMore {
+public class SearchResultsActivity extends BaseActivity implements OnViewActionListener {
 
     @BindView(R.id.search_for)
     TextView search_for;
@@ -72,7 +74,7 @@ public class SearchResultsActivity extends BaseActivity implements OnLoadMore {
             String query = intent.getStringExtra(SearchManager.QUERY);
             //use the query to search your data somehow
             search_for.setText("You are searching for \"" + query + "\"");
-            student = new com.kepler.notificationsystem.dao.Student(query,null,null,null,null,null);
+            student = new com.kepler.notificationsystem.dao.Student(query,null,null,null,null,null, null);
             load();
         } else {
             onBackPressed();
@@ -124,5 +126,19 @@ public class SearchResultsActivity extends BaseActivity implements OnLoadMore {
     @Override
     public void refresh() {
         load();
+    }
+
+    @Override
+    public void onProfileBtnClicked(com.kepler.notificationsystem.dao.Student student) {
+        Bundle bundle=new Bundle();
+        bundle.putParcelable(Params.DATA,student);
+        Utils.startActivity(this,Profile.class,bundle,false);
+    }
+
+    @Override
+    public void onSendMessageBtnClicked(com.kepler.notificationsystem.dao.Student student) {
+//        Bundle bundle=new Bundle();
+//        bundle.putParcelable(Params.DATA,student);
+        Utils.startActivity(this,SendMessage.class,null,false);
     }
 }
