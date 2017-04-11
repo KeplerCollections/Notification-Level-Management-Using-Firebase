@@ -4,4 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="dimen_prifile_page_bg_sz">200dp</dimen>
     <dimen name="dimen_prifile_page_src_sz">60dp</dimen>
+    <dimen name="ten_dp">10dp</dimen>
+    <dimen name="five_dp">5dp</dimen>
+    <dimen name="point_three_dp"  format="float">0.33dp</dimen>
 </resources>

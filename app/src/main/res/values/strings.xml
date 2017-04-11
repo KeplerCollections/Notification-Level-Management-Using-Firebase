@@ -68,8 +68,8 @@
     <string name="important">Important</string>
     <string name="warning">Warning</string>
     <string name="upload_file">Select File</string>
-    <string name="custom">Custom</string>
     <string name="send_to">Send To</string>
+    <string name="custom">Custom</string>
 
     <array name="type">
         <item>@string/student</item>
