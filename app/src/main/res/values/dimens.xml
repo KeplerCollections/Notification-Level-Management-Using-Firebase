@@ -7,4 +7,5 @@
     <dimen name="ten_dp">10dp</dimen>
     <dimen name="five_dp">5dp</dimen>
     <dimen name="point_three_dp"  format="float">0.33dp</dimen>
+    <dimen name="twenty_dp">20dp</dimen>
 </resources>

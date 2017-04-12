@@ -117,8 +117,8 @@ public class Register extends BaseActivity implements View.OnClickListener {
         builder.setTitle(R.string.select_batch);
         final NumberPicker np = new NumberPicker(activity);
         final int year = Calendar.getInstance().get(Calendar.YEAR);
-        np.setMinValue(year - 4);
-        np.setMaxValue(year + 4);
+        np.setMinValue(year - Utils.BEFORE_CRT_YEAR);
+        np.setMaxValue(year + Utils.AFTER_CRT_YEAR);
         np.setValue(year);
         np.setWrapSelectorWheel(false);
         builder.setPositiveButton(R.string.select, new DialogInterface.OnClickListener() {

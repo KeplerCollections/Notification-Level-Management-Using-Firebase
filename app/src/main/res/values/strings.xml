@@ -21,6 +21,7 @@
     <string name="authenticating">Authenticating....</string>
     <string name="rn_error_msg">Please enter valid roll number</string>
     <string name="batch_error_msg">Please select your batch</string>
+    <string name="batch_data_empty">Students are found in this batch</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="update">Update</string>

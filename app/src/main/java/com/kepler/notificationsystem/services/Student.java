@@ -53,7 +53,8 @@ public class Student {
         load(null, requestParams, simpleNetworkHandler);
     }
 
-    public static void update(Context context, com.kepler.notificationsystem.dao.Student student, SimpleNetworkHandler simpleNetworkHandler) {;
+    public static void update(Context context, com.kepler.notificationsystem.dao.Student student, SimpleNetworkHandler simpleNetworkHandler) {
+        ;
         RequestParams requestParams = new RequestParams();
         requestParams.add(Params.ID, student.getId());
         requestParams.add(Params.NAME, student.getName());
@@ -77,6 +78,13 @@ public class Student {
         }
         requestParams.add(Params.OFFSET, String.valueOf(OFFSET));
         requestParams.add(Params.PAGE, String.valueOf(page));
+        requestParams.add(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
+        requestParams.add(Params.ACTION, SELECT);
+        load(null, requestParams, simpleNetworkHandler);
+    }
+
+    public static void select(Context context, SimpleNetworkHandler simpleNetworkHandler) {
+        RequestParams requestParams = new RequestParams();
         requestParams.add(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
         requestParams.add(Params.ACTION, SELECT);
         load(null, requestParams, simpleNetworkHandler);

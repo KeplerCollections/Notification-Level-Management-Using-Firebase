@@ -8,8 +8,6 @@
 
                     <stroke android:width="@dimen/point_three_dp" android:color="@color/colorPrimary" />
 
-                    <corners android:radius="@dimen/five_dp" />
-
                     <padding android:bottom="@dimen/ten_dp" android:left="@dimen/ten_dp" android:right="@dimen/ten_dp" android:top="@dimen/ten_dp" />
                 </shape>
             </item>

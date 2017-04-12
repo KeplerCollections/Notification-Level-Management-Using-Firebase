@@ -53,7 +53,8 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".admin.SendMessage" />
         <activity android:name=".student.Update" />
-        <activity android:name=".student.Profile"></activity>
+        <activity android:name=".student.Profile" />
+        <activity android:name=".admin.SelectStudent"></activity>
     </application>
 
 </manifest>
