@@ -71,6 +71,8 @@
     <string name="upload_file">Select File</string>
     <string name="send_to">Send To</string>
     <string name="custom">Custom</string>
+    <string name="title_er_msg">Please enter title</string>
+    <string name="_msg_er_msg">Please enter message</string>
 
     <array name="type">
         <item>@string/student</item>

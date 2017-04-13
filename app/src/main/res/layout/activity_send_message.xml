@@ -4,11 +4,11 @@
     android:id="@+id/activity_send_message"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:scrollbars="none"
     tools:context="com.kepler.notificationsystem.admin.SendMessage">
 
     <LinearLayout
@@ -21,13 +21,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="@string/title"
             android:lines="1"
             android:padding="5dp"
+            android:text="@string/title"
             android:textAllCaps="true"
             android:textColor="@color/colorAccent" />
 
         <EditText
+            android:id="@+id/_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_drawable"
@@ -39,13 +40,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
-            android:text="@string/message"
             android:lines="1"
             android:padding="5dp"
+            android:text="@string/message"
             android:textAllCaps="true"
             android:textColor="@color/colorAccent" />
 
         <EditText
+            android:id="@+id/_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_drawable"
@@ -59,16 +61,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
-            android:text="@string/select_type"
             android:lines="1"
             android:padding="5dp"
+            android:text="@string/select_type"
             android:textAllCaps="true"
             android:textColor="@color/colorAccent" />
 
         <Spinner
+            android:id="@+id/_type"
+            style="@style/SpinnerTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/SpinnerTheme"
             android:entries="@array/message_type_array" />
 
         <TextView
@@ -77,20 +80,35 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
-            android:text="@string/upload_file"
             android:lines="1"
             android:padding="5dp"
+            android:text="@string/upload_file"
             android:textAllCaps="true"
             android:textColor="@color/colorAccent" />
 
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_drawable"
-            android:drawableRight="@android:drawable/ic_menu_upload"
-            android:gravity="center_vertical"
-            android:text="@string/upload_file"
-            android:lines="1" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/_file"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|left"
+                android:background="@drawable/edit_text_drawable"
+                android:drawableLeft="@android:drawable/ic_menu_upload"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:text="@string/upload_file" />
+
+            <ImageButton
+                android:id="@+id/remove_file"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_delete"
+                android:layout_gravity="center_vertical|right" />
+        </FrameLayout>
 
         <TextView
             style="@android:style/TextAppearance.Medium"
@@ -98,25 +116,26 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
-            android:text="@string/send_to"
             android:lines="1"
             android:padding="5dp"
+            android:text="@string/send_to"
             android:textAllCaps="true"
             android:textColor="@color/colorAccent" />
 
         <Spinner
             android:id="@+id/send_to"
+            style="@style/SpinnerTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/SpinnerTheme"
             android:entries="@array/send_to" />
 
         <Button
+            android:id="@+id/send_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/send_message"
             android:background="@drawable/button_drawable"
+            android:text="@string/send_message"
             android:textAllCaps="true"
             android:textColor="@android:color/white" />
 

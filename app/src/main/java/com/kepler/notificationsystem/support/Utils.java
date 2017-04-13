@@ -15,8 +15,8 @@ import com.kepler.notificationsystem.R;
 
 public class Utils {
     public static final String ADMIN_EMAIL_ID = "developer.amitjaiswal@gmail.com";
-    public static final int BEFORE_CRT_YEAR = 4;
-    public static final int AFTER_CRT_YEAR = 4;
+    public static final int BEFORE_CRT_YEAR = 20;
+    public static final int AFTER_CRT_YEAR = 20;
 
     public static void startActivity(Context context, Class<? extends BaseActivity> activityClass, Bundle bundle, boolean finish) {
         Intent intent = new Intent(context, activityClass);

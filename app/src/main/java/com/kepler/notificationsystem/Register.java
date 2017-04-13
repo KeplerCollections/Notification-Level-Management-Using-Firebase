@@ -104,7 +104,6 @@ public class Register extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onYearSet(String year) {
                         select_batch.setText(year);
-
                     }
                 });
                 break;
@@ -150,7 +149,7 @@ public class Register extends BaseActivity implements View.OnClickListener {
                             Utils.toast(getApplicationContext(), task.getException().getMessage());
                         } else {
                             final Student user = new Student(String.valueOf(name.getText()), String.valueOf(username.getText()),
-                                    String.valueOf(password.getText()), String.valueOf(rn.getText()), String.valueOf(cn.getText()), select_batch.getText().toString(), null);
+                                    String.valueOf(password.getText()), String.valueOf(rn.getText()), String.valueOf(cn.getText()),String.valueOf(select_batch.getText()), null);
                             com.kepler.notificationsystem.services.Student.register(getApplicationContext(), user, new SimpleNetworkHandler() {
 
                                 @Override
