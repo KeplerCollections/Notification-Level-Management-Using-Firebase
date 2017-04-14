@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.kepler.notificationsystem.admin.AdminMain;
 import com.kepler.notificationsystem.notification.Config;
 import com.kepler.notificationsystem.student.Main;
@@ -58,7 +59,9 @@ public class Login extends BaseActivity implements View.OnClickListener {
         login.setOnClickListener(this);
         register.setOnClickListener(this);
         forgot.setOnClickListener(this);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        Logger.e(TAG,"token");
+        System.out.println(FirebaseInstanceId.getInstance().getToken());
+        Logger.e(TAG,"token");        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
@@ -161,9 +164,9 @@ public class Login extends BaseActivity implements View.OnClickListener {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Utils.toast(getApplicationContext(),R.string.password_link_send);
-                                }else{
-                                    Utils.toast(getApplicationContext(),task.getException().getMessage());
+                                    Utils.toast(getApplicationContext(), R.string.password_link_send);
+                                } else {
+                                    Utils.toast(getApplicationContext(), task.getException().getMessage());
                                 }
                                 progressDialog.dismiss();
                             }

@@ -14,7 +14,7 @@ import com.kepler.notificationsystem.R;
  */
 
 public class Utils {
-    public static final String ADMIN_EMAIL_ID = "developer.amitjaiswal@gmail.com";
+        public static final String ADMIN_EMAIL_ID = "developer.amitjaiswal@gmail.com";
     public static final int BEFORE_CRT_YEAR = 20;
     public static final int AFTER_CRT_YEAR = 20;
 

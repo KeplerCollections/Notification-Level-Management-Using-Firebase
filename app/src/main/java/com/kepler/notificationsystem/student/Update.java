@@ -69,7 +69,7 @@ public class Update extends BaseActivity implements View.OnClickListener {
         setView();
         register.setText(R.string.update);
         register.setOnClickListener(this);
-        select_batch.setOnClickListener(this);
+//        select_batch.setOnClickListener(this);
     }
 
     private void setView() {
@@ -99,6 +99,10 @@ public class Update extends BaseActivity implements View.OnClickListener {
                     Utils.toast(getApplicationContext(), R.string.user_error_msg);
                     return;
                 }
+                if (username.getText().toString().trim().length() == 0 || !android.util.Patterns.EMAIL_ADDRESS.matcher(username.getText().toString().trim()).matches()) {
+                    Utils.toast(getApplicationContext(), R.string.email_error_msg);
+                    return;
+                }
                 if (cn.getText().toString().trim().length() < 10) {
                     Utils.toast(getApplicationContext(), R.string.cn_error_msg);
                     return;
@@ -111,42 +115,22 @@ public class Update extends BaseActivity implements View.OnClickListener {
                     Utils.toast(getApplicationContext(), R.string.batch_error_msg);
                     return;
                 }
+
                 update();
                 break;
-            case R.id.select_batch:
-                openYearPickerDialog(Update.this, new OnYearSelect() {
-
-                    @Override
-                    public void onYearSet(String year) {
-                        select_batch.setText(year);
-
-                    }
-                });
-                break;
+//            case R.id.select_batch:
+//                openYearPickerDialog(Update.this, new OnYearSelect() {
+//
+//                    @Override
+//                    public void onYearSet(String year) {
+//                        select_batch.setText(year);
+//
+//                    }
+//                });
+//                break;
         }
     }
 
-    public static void openYearPickerDialog(BaseActivity activity, final OnYearSelect onYearSelect) {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(R.string.select_batch);
-        final NumberPicker np = new NumberPicker(activity);
-        final int year = Calendar.getInstance().get(Calendar.YEAR);
-        np.setMinValue(year - 4);
-        np.setMaxValue(year + 4);
-        np.setValue(year);
-        np.setWrapSelectorWheel(false);
-        builder.setPositiveButton(R.string.select, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                onYearSelect.onYearSet(String.valueOf(np.getValue()));
-            }
-        });
-        builder.setView(np);
-        AlertDialog d = builder.create();
-        d.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        d.show();
-    }
 
     private void update() {
         student.setEmailid(String.valueOf(username.getText()));

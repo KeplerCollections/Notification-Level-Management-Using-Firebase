@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.kepler.notificationsystem.dao.Student;
 import com.kepler.notificationsystem.support.Logger;
 import com.kepler.notificationsystem.support.OnYearSelect;
@@ -54,6 +56,7 @@ public class Register extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAuth = mAuth.getInstance();
+        System.out.println(FirebaseInstanceId.getInstance().getToken());
         register.setOnClickListener(this);
         select_batch.setOnClickListener(this);
     }
@@ -133,6 +136,10 @@ public class Register extends BaseActivity implements View.OnClickListener {
     }
 
     private void register() {
+        if(FirebaseInstanceId.getInstance().getToken()==null){
+            Utils.toast(getApplicationContext(),R.string.please_try_after_a_minute);
+            return;
+        }
         mAuth.createUserWithEmailAndPassword(username.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
                     final ProgressDialog progressDialog = ProgressDialog.show(Register.this, "", getResources().getString(R.string.loading));
@@ -157,6 +164,7 @@ public class Register extends BaseActivity implements View.OnClickListener {
                                     try {
                                         final JSONObject jsonObject = new JSONObject(responseBody.toString());
                                         if (jsonObject.getBoolean(Params.STATUS)) {
+                                            FirebaseMessaging.getInstance().subscribeToTopic(String.valueOf(select_batch.getText()));
                                             task.getResult().getUser().sendEmailVerification()
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override

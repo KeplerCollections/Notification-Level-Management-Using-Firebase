@@ -26,4 +26,6 @@ public class Params {
     public static final String EMAILID = "emailid";
     public static final String IS_STUDENT = "is_student";
     public static final String ID = "id";
+    public static final String FILE = "file";
+    public static final String FILE_NAME = "file_name";
 }

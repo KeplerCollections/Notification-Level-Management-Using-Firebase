@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.kepler.notificationsystem.R;
 import com.kepler.notificationsystem.dao.Student;
+import com.kepler.notificationsystem.support.CircleTransform;
 import com.kepler.notificationsystem.support.OnViewActionListener;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -88,7 +89,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentH
 //            titleTextView.setText(students.getTitle());
             _name.setText(student.getName());
             _emailid.setText(student.getEmailid());
-            Picasso.with(context).load(student.getImg()).placeholder(R.drawable.acc).
+            Picasso.with(context).load(student.getImg()).resize(100,100).placeholder(R.drawable.acc).
                     into(profile_pic);
             _profile.setOnClickListener(new View.OnClickListener() {
                 @Override

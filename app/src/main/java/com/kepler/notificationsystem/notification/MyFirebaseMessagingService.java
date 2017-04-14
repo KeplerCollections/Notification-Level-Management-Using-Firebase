@@ -11,6 +11,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.kepler.notificationsystem.student.Main;
+import com.kepler.notificationsystem.support.Logger;
 import com.kepler.notificationsystem.support.Params;
 import com.kepler.notificationsystem.support.Utils;
 
@@ -26,10 +27,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.e(TAG, "From: " + remoteMessage.getFrom());
+        Logger.e(TAG, "From: " + remoteMessage.getFrom());
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF_USER, 0);
-
-        if (pref.getString(Params.USER, null) == null || remoteMessage == null)
+        if (pref.getString(Params.USER, null) == null || pref.getString(Params.USER, null).equals(Utils.ADMIN_EMAIL_ID) || remoteMessage == null)
             return;
 
         // Check if message contains a notification payload.
