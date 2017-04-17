@@ -17,16 +17,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/back_pic"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_prifile_page_bg_sz"
-                android:scaleType="centerCrop" />
+                android:background="@color/colorPrimary"
+                android:layout_height="@dimen/dimen_prifile_page_bg_sz" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_prifile_page_bg_sz"
-                android:background="@color/trans_dark_black" />
+                android:background="@color/trans_med_black" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"

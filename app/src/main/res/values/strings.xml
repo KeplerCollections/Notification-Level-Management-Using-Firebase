@@ -74,6 +74,13 @@
     <string name="title_er_msg">Please enter title</string>
     <string name="_msg_er_msg">Please enter message</string>
     <string name="please_try_after_a_minute">Slow Internet Connection! Please try after a minute.</string>
+    <string name="send_to_batch">Send to batch</string>
+    <string name="done">Done</string>
+    <string name="updating">updating...</string>
+    <string name="msg_demo">First, you specify the table where you want to remove rows after the DELETE FROM clause. Second, you add a search condition in the WHERE clause to identify which row to remove. The WHERE clause is an optional part of the DELETE statement.</string>
+    <string name="empty">Empty</string>
+    <string name="click_here">Click here to download attachments</string>
+    >
 
     <array name="type">
         <item>@string/student</item>
@@ -91,6 +98,7 @@
     </array>
     <array name="send_to">
         <item>@string/send_message_to_all</item>
+        <item>@string/send_to_batch</item>
         <item>@string/custom</item>
     </array>
 </resources>

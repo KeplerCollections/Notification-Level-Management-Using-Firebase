@@ -1,10 +1,14 @@
 package com.kepler.notificationsystem.admin.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -12,13 +16,13 @@ import android.widget.TextView;
 
 import com.kepler.notificationsystem.R;
 import com.kepler.notificationsystem.dao.Student;
-import com.kepler.notificationsystem.support.CircleTransform;
 import com.kepler.notificationsystem.support.OnViewActionListener;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,15 +31,15 @@ import butterknife.ButterKnife;
  * Created by Amit on 07-04-2017.
  */
 
-public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentHolder> {
+public class SelectStudentAdapter extends RecyclerView.Adapter<SelectStudentAdapter.StudentHolder> {
     private final Context context;
-    private final OnViewActionListener onViewActionListener;
+    private HashSet<String> selected = new HashSet<>();
     private List<Student> students = new ArrayList<>();
     private List<Student> original_students_data = new ArrayList<>();
-    private StudentNameFilter studentNameFilter=new StudentNameFilter();
-    public StudentAdapter(Context context, OnViewActionListener onViewActionListener) {
+    private StudentNameFilter studentNameFilter = new StudentNameFilter();
+
+    public SelectStudentAdapter(Context context) {
         this.context = context;
-        this.onViewActionListener = onViewActionListener;
     }
 
     @Override
@@ -44,7 +48,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentH
         LayoutInflater layoutInflater =
                 LayoutInflater.from(context);
         View view = layoutInflater.inflate(
-                R.layout.student_item_view,
+                R.layout.select_student_items,
                 parent, false);
         return new StudentHolder(view);
     }
@@ -60,23 +64,20 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentH
         return students.size();
     }
 
-    public void addAll(List<com.kepler.notificationsystem.dao.Student> data) {
+    public void addAll(List<Student> data) {
         original_students_data.addAll(data);
         students.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public String getSelected() {
+        return TextUtils.join(",", selected);
     }
 
     class StudentHolder extends RecyclerView.ViewHolder {
         private Student student;
-        @BindView(R.id._name)
-        TextView _name;
-        @BindView(R.id._emailid)
-        TextView _emailid;
-        @BindView(R.id._more)
-        ImageButton _more;
-        @BindView(R.id._profile)
-        ImageButton _profile;
-        @BindView(R.id.profile_pic)
-        ImageView profile_pic;
+        @BindView(R.id.chb_tv)
+        CheckedTextView chb_tv;
 
         public StudentHolder(View itemView) {
             super(itemView);
@@ -85,29 +86,27 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentH
 
         public void bindStudent(final Student student) {
             this.student = student;
-//            titleTextView.setText(students.getTitle());
-            _name.setText(student.getName());
-            _emailid.setText(student.getEmailid());
-            Picasso.with(context).load(student.getImg()).resize(100,100).placeholder(R.drawable.acc).
-                    into(profile_pic);
-            _profile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onViewActionListener.onProfileBtnClicked(student);
-                }
-            });
-            _more.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onViewActionListener.onSendMessageBtnClicked(student);
-                }
-            });
-            if (students.size() % com.kepler.notificationsystem.services.Student.OFFSET == 0
-                    && getAdapterPosition() == students.size() - 1) {
-                onViewActionListener.refresh();
-                // Get more items
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                chb_tv.setText(Html.fromHtml("<big>" + student.getName() + "</big><br>&nbsp<font color='#aaa'>" + student.getEmailid() + "</font>", Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                chb_tv.setText(Html.fromHtml("<big>" + student.getName() + "</big><br>&nbsp<font color='#aaa'>" + student.getEmailid() + "</font>"));
             }
+            chb_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (chb_tv.isChecked()) {
+                        chb_tv.setChecked(false);
+                        if (student.getReg_id().trim().length() != 0)
+                            selected.add(student.getId());
+                        notifyDataSetChanged();
+                    } else {
+                        chb_tv.setChecked(true);
+                        if (student.getReg_id().trim().length() != 0)
+                            selected.remove(student.getId());
+                        notifyDataSetChanged();
+                    }
+                }
+            });
         }
     }
 

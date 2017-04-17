@@ -18,8 +18,8 @@
             android:id="@+id/search_students"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             android:background="@drawable/edit_text_drawable"
+            android:enabled="false"
             android:hint="@string/search_title" />
     </LinearLayout>
 
@@ -50,4 +50,5 @@
             android:text="@string/search_result_empty" />
 
     </LinearLayout>
+
 </LinearLayout>

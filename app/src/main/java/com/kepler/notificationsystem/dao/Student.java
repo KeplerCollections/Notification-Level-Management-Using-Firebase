@@ -30,6 +30,8 @@ public class Student implements Parcelable {
     private String device_id;
     @Expose
     private String img;
+    @Expose
+    private String reg_id;
 
     public Student(String name, String emailid, String password, String rn, String cn, String batch, String img) {
         this.name = name;
@@ -153,5 +155,9 @@ public class Student implements Parcelable {
         parcel.writeString(batch);
         parcel.writeString(device_id);
         parcel.writeString(img);
+    }
+
+    public String getReg_id() {
+        return reg_id;
     }
 }

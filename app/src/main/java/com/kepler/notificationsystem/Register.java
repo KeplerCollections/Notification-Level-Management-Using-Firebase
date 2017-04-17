@@ -136,10 +136,6 @@ public class Register extends BaseActivity implements View.OnClickListener {
     }
 
     private void register() {
-        if(FirebaseInstanceId.getInstance().getToken()==null){
-            Utils.toast(getApplicationContext(),R.string.please_try_after_a_minute);
-            return;
-        }
         mAuth.createUserWithEmailAndPassword(username.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
                     final ProgressDialog progressDialog = ProgressDialog.show(Register.this, "", getResources().getString(R.string.loading));
@@ -164,8 +160,7 @@ public class Register extends BaseActivity implements View.OnClickListener {
                                     try {
                                         final JSONObject jsonObject = new JSONObject(responseBody.toString());
                                         if (jsonObject.getBoolean(Params.STATUS)) {
-                                            FirebaseMessaging.getInstance().subscribeToTopic(String.valueOf(select_batch.getText()));
-                                            task.getResult().getUser().sendEmailVerification()
+                                             task.getResult().getUser().sendEmailVerification()
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {

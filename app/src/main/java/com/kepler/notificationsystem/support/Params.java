@@ -15,6 +15,7 @@ public class Params {
     public static final String MESSAGE = "message";
     public static final String REG_ID = "regId";
     public static final String TOKEN = "token";
+    public static final String PREV_USER = "prev_user";
     public static final String USER = "user";
     public static final String VALUE = "value";
     public static final String NEW_EMAILID = "new_emailid";

@@ -1,6 +1,8 @@
 package com.kepler.notificationsystem.admin;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,8 +17,11 @@ import android.widget.TextView;
 import com.kepler.notificationsystem.BaseActivity;
 import com.kepler.notificationsystem.R;
 import com.kepler.notificationsystem.Register;
+import com.kepler.notificationsystem.admin.adapter.SelectStudentAdapter;
 import com.kepler.notificationsystem.support.OnYearSelect;
 import com.kepler.notificationsystem.support.Utils;
+
+import java.util.Calendar;
 
 import butterknife.BindView;
 
@@ -47,8 +52,18 @@ public class SendMessage extends BaseActivity implements View.OnClickListener {
         send_to.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 1) {
-                    Utils.startActivityForResult(SendMessage.this, SelectStudent.class, null, REQUEST_CODE);
+                switch (i) {
+                    case 1:
+                        Register.openYearPickerDialog(SendMessage.this, new OnYearSelect() {
+                            @Override
+                            public void onYearSet(String year) {
+
+                            }
+                        });
+                        break;
+                    case 2:
+                        Utils.startActivityForResult(SendMessage.this, SelectStudents.class, null, REQUEST_CODE);
+                        break;
                 }
             }
 
@@ -109,6 +124,8 @@ public class SendMessage extends BaseActivity implements View.OnClickListener {
             case REQUEST_CODE:
                 if (requestCode == RESULT_OK) {
 
+                } else {
+                    send_to.setSelection(0);
                 }
                 break;
         }

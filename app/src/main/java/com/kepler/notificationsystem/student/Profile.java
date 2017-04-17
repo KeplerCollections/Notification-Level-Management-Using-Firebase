@@ -37,8 +37,6 @@ public class Profile extends BaseActivity implements View.OnClickListener {
     private static final String TAG = Profile.class.getSimpleName();
     @BindView(R.id.content)
     TextView content;
-    @BindView(R.id.back_pic)
-    ImageView back_pic;
     @BindView(R.id.profile_pic)
     ImageView profile_pic;
     @BindView(R.id.edit_pic)
@@ -217,7 +215,6 @@ public class Profile extends BaseActivity implements View.OnClickListener {
         }
         Picasso.with(Profile.this).load(student.getImg()).resize(150, 150).transform(new CircleTransform()).placeholder(R.drawable.acc)
                 .into(profile_pic);
-        Picasso.with(Profile.this).load(student.getImg()).centerCrop().placeholder(R.drawable.ic_logo).into(back_pic);
     }
 
     @Override

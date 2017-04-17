@@ -2,6 +2,7 @@ package com.kepler.notificationsystem.services;
 
 import android.content.Context;
 
+import com.kepler.notificationsystem.dao.Push;
 import com.kepler.notificationsystem.notification.Config;
 import com.kepler.notificationsystem.support.GenerateHashKey;
 import com.kepler.notificationsystem.support.Params;
@@ -17,11 +18,18 @@ import java.io.FileNotFoundException;
 public class Student {
     private static final int UPDATE_EMAIL = 1;
     private static final int UPDATE_ALL = 2;
+    private static final int UPDATE_REG_ID = 3;
     private static final String UPDATE = "update";
     private static final String SELECT = "select";
     private static final String REGISTER = "register";
     public static final String UPDATE_PIC = "update_pic";
     public static final int OFFSET = 30;
+    public static final int NORMAL_TYPE = 111;
+    public static final int IMAPORTANT_TYPE = 222;
+    public static final int WARNING_TYPE = 333;
+    public static final String TOPIC = "topic";
+    public static final String INDIVIDUAL = "individual";
+    public static final String GLOABAL = "global";
 
     public static void register(Context context, com.kepler.notificationsystem.dao.Student student, SimpleNetworkHandler simpleNetworkHandler) {
         RequestParams requestParams = new RequestParams();
@@ -45,6 +53,18 @@ public class Student {
 //        load(null, requestParams, simpleNetworkHandler);
 //    }
 
+    public static void sendPush(Context context, Push push, SimpleNetworkHandler simpleNetworkHandler) {
+//        if (email_id == null)
+//            return;
+//        RequestParams requestParams = new RequestParams();
+//        requestParams.put(Params.EMAILID, email_id);
+//        requestParams.put(Params.NEW_EMAILID, new_email_id);
+//        requestParams.put(Params.ACTION_TYPE, String.valueOf(UPDATE_EMAIL));
+//        requestParams.put(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
+//        requestParams.put(Params.ACTION, UPDATE);
+//        load(null, requestParams, simpleNetworkHandler);
+    }
+
     public static void updateEmailId(Context context, String email_id, String new_email_id, SimpleNetworkHandler simpleNetworkHandler) {
         if (email_id == null)
             return;
@@ -52,6 +72,18 @@ public class Student {
         requestParams.put(Params.EMAILID, email_id);
         requestParams.put(Params.NEW_EMAILID, new_email_id);
         requestParams.put(Params.ACTION_TYPE, String.valueOf(UPDATE_EMAIL));
+        requestParams.put(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
+        requestParams.put(Params.ACTION, UPDATE);
+        load(null, requestParams, simpleNetworkHandler);
+    }
+
+    public static void updateRegId(Context context, String email_id, String reg_id, SimpleNetworkHandler simpleNetworkHandler) {
+        if (email_id == null)
+            return;
+        RequestParams requestParams = new RequestParams();
+        requestParams.put(Params.EMAILID, email_id);
+        requestParams.put(Params.REG_ID, reg_id);
+        requestParams.put(Params.ACTION_TYPE, String.valueOf(UPDATE_REG_ID));
         requestParams.put(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
         requestParams.put(Params.ACTION, UPDATE);
         load(null, requestParams, simpleNetworkHandler);

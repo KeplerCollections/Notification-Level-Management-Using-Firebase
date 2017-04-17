@@ -66,6 +66,7 @@
         <activity android:name=".student.Update" />
         <activity android:name=".student.Profile" />
         <activity android:name=".admin.SelectStudent"></activity>
+        <activity android:name=".admin.SelectStudents"></activity>
     </application>
 
 </manifest>
