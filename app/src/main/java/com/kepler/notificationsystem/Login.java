@@ -23,14 +23,27 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 import com.kepler.notificationsystem.admin.AdminMain;
+import com.kepler.notificationsystem.admin.SelectStudents;
+import com.kepler.notificationsystem.admin.adapter.SelectStudentAdapter;
+import com.kepler.notificationsystem.dao.Student;
+import com.kepler.notificationsystem.dao.StudentParent;
 import com.kepler.notificationsystem.notification.Config;
+import com.kepler.notificationsystem.services.SimpleNetworkHandler;
 import com.kepler.notificationsystem.student.Main;
 import com.kepler.notificationsystem.support.Logger;
 import com.kepler.notificationsystem.support.Params;
 import com.kepler.notificationsystem.support.Utils;
 
+import org.json.JSONObject;
+
+import java.util.List;
+
 import butterknife.BindView;
+import cz.msebera.android.httpclient.Header;
 
 public class Login extends BaseActivity implements View.OnClickListener {
     private static final String TAG = Login.class.getSimpleName();
@@ -58,16 +71,21 @@ public class Login extends BaseActivity implements View.OnClickListener {
         login.setOnClickListener(this);
         register.setOnClickListener(this);
         forgot.setOnClickListener(this);
+        Logger.e(TAG, "token");
+        System.out.println(FirebaseInstanceId.getInstance().getToken());
+        Logger.e(TAG, "token");
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
-                    username.setText("");
+                    username.setText("amitjaiswal002@gmail.com");
+                    password.setText("123456");
                     username.setEnabled(true);
                     forgot.setEnabled(true);
                     register.setEnabled(true);
                 } else {
                     username.setText("developer.amitjaiswal@gmail.com");
+                    password.setText("qwerty");
                     username.setEnabled(false);
                     forgot.setEnabled(false);
                     register.setEnabled(false);
@@ -122,7 +140,11 @@ public class Login extends BaseActivity implements View.OnClickListener {
                     Utils.toast(getApplicationContext(), R.string.password_error_msg);
                     return;
                 }
-                login();
+                if (spinner.getSelectedItemPosition() == 1) {
+                    login(null);
+                } else {
+                    storeRegIdToServer();
+                }
                 break;
             case R.id.register:
                 Utils.startActivity(this, Register.class, null, false);
@@ -159,9 +181,9 @@ public class Login extends BaseActivity implements View.OnClickListener {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Utils.toast(getApplicationContext(),R.string.password_link_send);
-                                }else{
-                                    Utils.toast(getApplicationContext(),task.getException().getMessage());
+                                    Utils.toast(getApplicationContext(), R.string.password_link_send);
+                                } else {
+                                    Utils.toast(getApplicationContext(), task.getException().getMessage());
                                 }
                                 progressDialog.dismiss();
                             }
@@ -178,8 +200,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
         builder.show();
     }
 
-    private void login() {
-
+    private void login(final String topic) {
         mAuth.signInWithEmailAndPassword(username.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     final ProgressDialog progressDialog = ProgressDialog.show(Login.this, "", getResources().getString(R.string.authenticating));
@@ -195,12 +216,15 @@ public class Login extends BaseActivity implements View.OnClickListener {
                             Logger.e(TAG, "signInWithEmail:failed", task.getException());
 //                            Utils.toast(getApplicationContext(), R.string.auth_failed);
                             Utils.toast(getApplicationContext(), task.getException().getMessage());
-
                         } else {
                             final FirebaseUser user = task.getResult().getUser();
                             if (!(task.getResult().getUser().getEmail().equalsIgnoreCase(Utils.ADMIN_EMAIL_ID) || task.getResult().getUser().isEmailVerified())) {
                                 rensendVerifyEmailLink(task);
                                 return;
+                            }
+                            if (topic != null) {
+                                FirebaseMessaging.getInstance().subscribeToTopic(topic);
+                                FirebaseMessaging.getInstance().subscribeToTopic(com.kepler.notificationsystem.services.Student.GLOABAL);
                             }
                             if (spinner.getSelectedItemPosition() == 1) {
 //                                Utils.toast(getApplicationContext(), R.string.logged);
@@ -220,6 +244,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
                         }
                     }
 
+
                     private void storeRegIdInPref(FirebaseUser token) {
                         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF_USER, 0);
                         SharedPreferences.Editor editor = pref.edit();
@@ -232,6 +257,45 @@ public class Login extends BaseActivity implements View.OnClickListener {
                     }
                 });
     }
+
+    private void storeRegIdToServer() {
+        if (FirebaseInstanceId.getInstance().getToken() == null) {
+            Utils.toast(getApplicationContext(), R.string.please_try_after_a_minute);
+            return;
+        }
+        com.kepler.notificationsystem.services.Student.updateRegId(getApplicationContext(), username.getText().toString(), FirebaseInstanceId.getInstance().getToken(), new SimpleNetworkHandler() {
+
+            public ProgressDialog progressDialog;
+
+            @Override
+            public void onStart() {
+                progressDialog = ProgressDialog.show(Login.this, "", getResources().getString(R.string.loading));
+            }
+
+            @Override
+            public void onResult(int statusCode, Header[] headers, Object responseBody) {
+                Gson gson = new Gson();
+                StudentParent fromJson = gson.fromJson(responseBody.toString(), StudentParent.class);
+                if (fromJson.isStatus()) {
+                    if (fromJson.getData().size() > 0) {
+                        login(fromJson.getData().get(0).getBatch());
+                    } else {
+                        Utils.toast(getApplicationContext(), R.string.failed);
+                    }
+                } else {
+                    Utils.toast(getApplicationContext(), fromJson.getMessage());
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
+            }
+        });
+    }
+
 
     private void rensendVerifyEmailLink(final Task<AuthResult> task) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -279,48 +343,6 @@ public class Login extends BaseActivity implements View.OnClickListener {
         });
 
         builder.show();
-    }
-
-
-    private class CheckFireBaseRegId extends AsyncTask<Void, Void, Void> {
-        private Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (TextUtils.isEmpty(pref.getString(Params.REG_ID, null))) {
-                    callMethed();
-                } else {
-                    Logger.e(TAG, pref.getString(Params.REG_ID, null));
-                }
-            }
-        };
-        private Handler handler = new Handler();
-        private ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = ProgressDialog.show(Login.this, "", "Registering with firebase services.....");
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            while (TextUtils.isEmpty(pref.getString(Params.REG_ID, null))) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            progressDialog.dismiss();
-            Logger.e(TAG, pref.getString(Params.REG_ID, null));
-
-        }
-
-        private void callMethed() {
-            handler.postDelayed(runnable, 5000);
-        }
     }
 
 

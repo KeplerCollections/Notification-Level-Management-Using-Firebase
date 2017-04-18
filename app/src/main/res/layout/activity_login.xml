@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        style="@style/SpinnerTheme"
         android:entries="@array/type"
         android:padding="10dp" />
 

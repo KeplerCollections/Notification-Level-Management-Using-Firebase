@@ -17,11 +17,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.kepler.notificationsystem.dao.Student;
 import com.kepler.notificationsystem.support.Logger;
 import com.kepler.notificationsystem.support.OnYearSelect;
 import com.kepler.notificationsystem.support.Params;
-import com.kepler.notificationsystem.support.SimpleNetworkHandler;
-import com.kepler.notificationsystem.support.Student;
+import com.kepler.notificationsystem.services.SimpleNetworkHandler;
 import com.kepler.notificationsystem.support.Utils;
 
 import org.json.JSONObject;
@@ -54,6 +56,7 @@ public class Register extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAuth = mAuth.getInstance();
+        System.out.println(FirebaseInstanceId.getInstance().getToken());
         register.setOnClickListener(this);
         select_batch.setOnClickListener(this);
     }
@@ -104,7 +107,6 @@ public class Register extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onYearSet(String year) {
                         select_batch.setText(year);
-
                     }
                 });
                 break;
@@ -117,8 +119,9 @@ public class Register extends BaseActivity implements View.OnClickListener {
         builder.setTitle(R.string.select_batch);
         final NumberPicker np = new NumberPicker(activity);
         final int year = Calendar.getInstance().get(Calendar.YEAR);
-        np.setMinValue(year - 4);
-        np.setMaxValue(year + 4);
+        np.setMinValue(year - Utils.BEFORE_CRT_YEAR);
+        np.setMaxValue(year + Utils.AFTER_CRT_YEAR);
+        np.setValue(year);
         np.setWrapSelectorWheel(false);
         builder.setPositiveButton(R.string.select, new DialogInterface.OnClickListener() {
             @Override
@@ -130,8 +133,6 @@ public class Register extends BaseActivity implements View.OnClickListener {
         AlertDialog d = builder.create();
         d.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         d.show();
-
-
     }
 
     private void register() {
@@ -151,7 +152,7 @@ public class Register extends BaseActivity implements View.OnClickListener {
                             Utils.toast(getApplicationContext(), task.getException().getMessage());
                         } else {
                             final Student user = new Student(String.valueOf(name.getText()), String.valueOf(username.getText()),
-                                    String.valueOf(password.getText()), String.valueOf(rn.getText()), String.valueOf(cn.getText()), select_batch.getText().toString());
+                                    String.valueOf(password.getText()), String.valueOf(rn.getText()), String.valueOf(cn.getText()),String.valueOf(select_batch.getText()), null);
                             com.kepler.notificationsystem.services.Student.register(getApplicationContext(), user, new SimpleNetworkHandler() {
 
                                 @Override
@@ -159,7 +160,7 @@ public class Register extends BaseActivity implements View.OnClickListener {
                                     try {
                                         final JSONObject jsonObject = new JSONObject(responseBody.toString());
                                         if (jsonObject.getBoolean(Params.STATUS)) {
-                                            task.getResult().getUser().sendEmailVerification()
+                                             task.getResult().getUser().sendEmailVerification()
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {

@@ -14,7 +14,9 @@ import com.kepler.notificationsystem.R;
  */
 
 public class Utils {
-    public static final String ADMIN_EMAIL_ID = "developer.amitjaiswal@gmail.com";
+        public static final String ADMIN_EMAIL_ID = "developer.amitjaiswal@gmail.com";
+    public static final int BEFORE_CRT_YEAR = 4;
+    public static final int AFTER_CRT_YEAR = 4;
 
     public static void startActivity(Context context, Class<? extends BaseActivity> activityClass, Bundle bundle, boolean finish) {
         Intent intent = new Intent(context, activityClass);
@@ -30,7 +32,13 @@ public class Utils {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
+    }
 
+    public static void startActivityForResult(Activity activity, Class<? extends BaseActivity> activityClass, Bundle bundle, int requestCode) {
+        Intent intent = new Intent(activity, activityClass);
+        if (bundle != null)
+            intent.putExtras(bundle);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     public static void startActivity(Context context, Class<? extends BaseActivity> activityClass, Bundle bundle, boolean finish, String actions) {

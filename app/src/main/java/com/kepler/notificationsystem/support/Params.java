@@ -5,7 +5,6 @@ package com.kepler.notificationsystem.support;
  */
 
 public class Params {
-    public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String ACTION = "action";
     public static final String DEVICE_ID = "device_id";
@@ -16,13 +15,18 @@ public class Params {
     public static final String MESSAGE = "message";
     public static final String REG_ID = "regId";
     public static final String TOKEN = "token";
+    public static final String PREV_USER = "prev_user";
     public static final String USER = "user";
     public static final String VALUE = "value";
-    public static final String NEW_USERNAME = "new_username";
+    public static final String NEW_EMAILID = "new_emailid";
     public static final String OFFSET = "offset";
     public static final String STATUS = "status";
     public static final String PAGE = "page";
     public static final String ACTION_TYPE = "action_type";
-
     public static final String DATA = "data";
+    public static final String EMAILID = "emailid";
+    public static final String IS_STUDENT = "is_student";
+    public static final String ID = "id";
+    public static final String FILE = "file";
+    public static final String FILE_NAME = "file_name";
 }

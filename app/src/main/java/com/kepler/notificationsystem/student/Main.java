@@ -12,31 +12,45 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 import com.kepler.notificationsystem.BaseActivity;
 import com.kepler.notificationsystem.Login;
 import com.kepler.notificationsystem.R;
+import com.kepler.notificationsystem.admin.Students;
+import com.kepler.notificationsystem.admin.adapter.StudentAdapter;
+import com.kepler.notificationsystem.admin.db.DatabaseHelper;
+import com.kepler.notificationsystem.dao.Push;
+import com.kepler.notificationsystem.dao.StudentParent;
 import com.kepler.notificationsystem.notification.Config;
 import com.kepler.notificationsystem.notification.NotificationUtils;
 import com.kepler.notificationsystem.services.Student;
+import com.kepler.notificationsystem.student.adapter.MessageAdapter;
+import com.kepler.notificationsystem.support.EmptyRecyclerView;
 import com.kepler.notificationsystem.support.Logger;
 import com.kepler.notificationsystem.support.Params;
-import com.kepler.notificationsystem.support.SimpleNetworkHandler;
+import com.kepler.notificationsystem.services.SimpleNetworkHandler;
 import com.kepler.notificationsystem.support.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
+import butterknife.BindView;
 import cz.msebera.android.httpclient.Header;
 
 public class Main extends BaseActivity {
@@ -45,11 +59,18 @@ public class Main extends BaseActivity {
     private SharedPreferences pref;
     private static final String TAG = Main.class.getSimpleName();
     private boolean doubleBackToExitPressedOnce;
+    private String emaiid;
+    @BindView(R.id.recycler_view)
+    EmptyRecyclerView recycler_view;
+    @BindView(R.id.recycler_empty_view)
+    LinearLayout recycler_empty_view;
+    private MessageAdapter messageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF_USER, 0);
+        emaiid = pref.getString(Params.USER, null);
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -64,14 +85,50 @@ public class Main extends BaseActivity {
 
                 } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
                     // new push notification is received
-
-                    String message = intent.getStringExtra("message");
-
-                    Utils.toast(getApplicationContext(), "Push notification: " + message);
+                    DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+                    Push push = databaseHelper.getMessage();
+                    databaseHelper.closeDB();
+                    if (push != null) {
+                        add(push);
+                    }
+                    Utils.toast(getApplicationContext(),"New Messge Received");
+                    recycler_view.getLayoutManager().scrollToPosition(messageAdapter.getItemCount()-1);
+//                    String message = intent.getStringExtra("message");
+//                    Logger.e(TAG, "Push notification: " + message);
 
                 }
             }
         };
+        setView();
+    }
+
+    private void setView() {
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+        recycler_view.setLayoutManager(mLayoutManager);
+        // Fetch the empty view from the layout and set it on
+        // the new recycler view
+        recycler_view.setEmptyView(recycler_empty_view);
+        messageAdapter = new MessageAdapter(getApplicationContext());
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        recycler_view.setAdapter(messageAdapter);
+        addAll(databaseHelper.getAllMsgs());
+        databaseHelper.closeDB();
+    }
+
+    private void add(Push message) {
+        messageAdapter.add(message);
+        notifyMe();
+    }
+
+    private void addAll(List<Push> messages) {
+        messageAdapter.addAll(messages);
+        notifyMe();
+    }
+
+    private void notifyMe() {
+        messageAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -93,15 +150,14 @@ public class Main extends BaseActivity {
         return true;
     }
 
-    private int getColorBy(int colorPrimary) {
-        return getResources().getColor(colorPrimary);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.m_profile:
-                Utils.startActivity(this, Profile.class, null, false);
+                Bundle bundle = new Bundle();
+                bundle.putString(Params.EMAILID, emaiid);
+                bundle.putBoolean(Params.IS_STUDENT, true);
+                Utils.startActivity(this, Profile.class, bundle, false);
                 return true;
             case R.id.m_update_password:
                 updatePassword();
@@ -125,11 +181,41 @@ public class Main extends BaseActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                pref.edit().remove(Params.USER).commit();
-                FirebaseAuth.getInstance().signOut();
-                doubleBackToExitPressedOnce = true;
-                Utils.startActivity(Main.this, Login.class, null, true, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                com.kepler.notificationsystem.services.Student.updateRegId(getApplicationContext(), emaiid, "", new SimpleNetworkHandler() {
 
+                    public ProgressDialog progressDialog;
+
+                    @Override
+                    public void onStart() {
+                        progressDialog = ProgressDialog.show(Main.this, "", getResources().getString(R.string.loading));
+                    }
+
+                    @Override
+                    public void onResult(int statusCode, Header[] headers, Object responseBody) {
+                        Gson gson = new Gson();
+                        StudentParent fromJson = gson.fromJson(responseBody.toString(), StudentParent.class);
+                        if (fromJson.isStatus()) {
+                            if (fromJson.getData().size() > 0) {
+                                pref.edit().remove(Params.USER).commit();
+                                FirebaseAuth.getInstance().signOut();
+                                doubleBackToExitPressedOnce = true;
+                                Utils.startActivity(Main.this, Login.class, null, true, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                            } else {
+                                Utils.toast(getApplicationContext(), R.string.failed);
+                            }
+                        } else {
+                            Utils.toast(getApplicationContext(), fromJson.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
+                    }
+                });
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -141,6 +227,7 @@ public class Main extends BaseActivity {
 
         builder.show();
     }
+
 
     private void updatePassword() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -209,50 +296,55 @@ public class Main extends BaseActivity {
                     Utils.toast(getApplicationContext(), R.string.email_error_msg);
                     return;
                 }
-                Student.updateEmailId(getApplicationContext(), input.getText().toString(), new SimpleNetworkHandler() {
-                    ProgressDialog progressDialog;
+                final ProgressDialog progressDialog = ProgressDialog.show(Main.this, "", getResources().getString(R.string.updating));
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                user.updateEmail(input.getText().toString())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Student.updateEmailId(getApplicationContext(), emaiid, input.getText().toString(), new SimpleNetworkHandler() {
 
-                    @Override
-                    public void onStart() {
-                        super.onStart();
-                        progressDialog = ProgressDialog.show(Main.this, "", getResources().getString(R.string.authenticating));
-                    }
+                                        @Override
+                                        public void onStart() {
+                                            super.onStart();
+                                        }
 
-                    @Override
-                    public void onResult(int statusCode, Header[] headers, Object responseBody) {
-                        JSONObject jsonObject = null;
-                        try {
-                            jsonObject = new JSONObject(responseBody.toString());
-                            if (jsonObject.getBoolean(Params.STATUS)) {
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                                user.updateEmail(input.getText().toString())
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
+                                        @Override
+                                        public void onResult(int statusCode, Header[] headers, Object responseBody) {
+                                            JSONObject jsonObject = null;
+                                            try {
+                                                jsonObject = new JSONObject(responseBody.toString());
+                                                if (jsonObject.getBoolean(Params.STATUS)) {
+                                                    SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF_USER, 0);
+                                                    SharedPreferences.Editor editor = pref.edit();
+                                                    editor.putString(Params.USER, input.getText().toString());
+                                                    editor.commit();
+                                                    emaiid = input.getText().toString();
                                                     Utils.toast(getApplicationContext(), R.string.update_success);
                                                 } else {
                                                     Utils.toast(getApplicationContext(), R.string.failed);
                                                 }
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
                                             }
-                                        });
-                            } else {
-                                Utils.toast(getApplicationContext(), R.string.failed);
+
+                                        }
+
+                                        @Override
+                                        public void onFinish() {
+                                            super.onFinish();
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+
+                                } else {
+                                    progressDialog.dismiss();
+                                    Utils.toast(getApplicationContext(), task.getException().getMessage());
+                                }
                             }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        progressDialog.dismiss();
-                    }
-                });
+                        });
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -290,7 +382,6 @@ public class Main extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
             return;

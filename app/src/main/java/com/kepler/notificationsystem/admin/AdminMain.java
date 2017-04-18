@@ -282,6 +282,7 @@ public class AdminMain extends BaseActivity implements SearchView.OnQueryTextLis
 //            args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
         switch (position) {
             case 0:
+                setTitle(String.valueOf(getDrawerItems().get(position)));
                 fragment = new Home();
                 replaceFragment(fragment, args);
                 break;
@@ -298,16 +299,17 @@ public class AdminMain extends BaseActivity implements SearchView.OnQueryTextLis
                 });
                 break;
             case 3:
+                setTitle(String.valueOf(getDrawerItems().get(position)));
                 fragment = new Settings();
                 replaceFragment(fragment, args);
                 break;
             default:
+                setTitle(String.valueOf(getDrawerItems().get(position)));
                 fragment = new Home();
                 replaceFragment(fragment, args);
         }
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
-        setTitle(String.valueOf(getDrawerItems().get(position)));
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 

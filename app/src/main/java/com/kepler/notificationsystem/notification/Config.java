@@ -15,5 +15,4 @@ public class Config {
  
     public static final String SHARED_PREF = "ah_firebase";
     public static final String SHARED_PREF_USER = "ah_user";
-    public static final String SHARED_PREF_SETTINGS = "ah_settings";
 }

@@ -1,8 +1,9 @@
-package com.kepler.notificationsystem.support;
+package com.kepler.notificationsystem.services;
 
 import android.content.Context;
 
-import com.kepler.notificationsystem.R;
+import com.kepler.notificationsystem.support.Logger;
+import com.kepler.notificationsystem.support.Utils;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
