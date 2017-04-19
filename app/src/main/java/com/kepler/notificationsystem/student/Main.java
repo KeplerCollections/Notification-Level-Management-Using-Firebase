@@ -181,7 +181,7 @@ public class Main extends BaseActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                com.kepler.notificationsystem.services.Student.updateRegId(getApplicationContext(), emaiid, "", new SimpleNetworkHandler() {
+                com.kepler.notificationsystem.services.Student.logout(getApplicationContext(), emaiid, "", new SimpleNetworkHandler() {
 
                     public ProgressDialog progressDialog;
 
@@ -195,15 +195,10 @@ public class Main extends BaseActivity {
                         Gson gson = new Gson();
                         StudentParent fromJson = gson.fromJson(responseBody.toString(), StudentParent.class);
                         if (fromJson.isStatus()) {
-                            if (fromJson.getData().size() > 0) {
                                 pref.edit().remove(Params.USER).commit();
                                 FirebaseAuth.getInstance().signOut();
                                 doubleBackToExitPressedOnce = true;
                                 Utils.startActivity(Main.this, Login.class, null, true, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                            } else {
-                                Utils.toast(getApplicationContext(), R.string.failed);
-                            }
                         } else {
                             Utils.toast(getApplicationContext(), fromJson.getMessage());
                         }

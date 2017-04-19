@@ -12,6 +12,8 @@ public class Params {
     public static final String RN = "rn";
     public static final String CN = "cn";
     public static final String BATCH = "batch";
+    public static final String COURSE = "course";
+    public static final String YEAR = "year";
     public static final String MESSAGE = "message";
     public static final String REG_ID = "regId";
     public static final String TOKEN = "token";

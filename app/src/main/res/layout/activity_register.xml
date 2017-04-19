@@ -68,17 +68,7 @@
             android:inputType="number"
             android:maxLines="1" />
 
-        <TextView
-            android:id="@+id/select_batch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edit_text_drawable"
-            android:enabled="true"
-            android:drawableRight="@drawable/ic_keyboard_arrow_down"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:hint="@string/select_batch"
-            android:padding="10dp" />
+        <include layout="@layout/select_" />
 
         <Button
             android:id="@+id/register"

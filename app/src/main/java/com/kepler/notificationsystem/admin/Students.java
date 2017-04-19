@@ -48,7 +48,7 @@ public class Students extends BaseActivity implements OnViewActionListener {
         recycler_view.setEmptyView(recycler_empty_view);
 
         Bundle bundle = getIntent().getExtras();
-        student = new com.kepler.notificationsystem.dao.Student(null, null, null, null, null, bundle.getString(Params.BATCH, null), null);
+        student = new com.kepler.notificationsystem.dao.Student(null, null, bundle.getString(Params.COURSE, null), bundle.getString(Params.BATCH, null));
         load();
     }
 
@@ -134,7 +134,7 @@ public class Students extends BaseActivity implements OnViewActionListener {
     public void onSendMessageBtnClicked(com.kepler.notificationsystem.dao.Student student) {
 //        Bundle bundle=new Bundle();
 //        bundle.putParcelable(Params.DATA,student);
-        Utils.startActivity(this,SendMessage.class,null,false);
+        Utils.startActivity(this, SendMessage.class, null, false);
     }
 
     private class MyTextWatcher implements TextWatcher {

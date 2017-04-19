@@ -1,36 +1,26 @@
 package com.kepler.notificationsystem.admin;
 
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.kepler.notificationsystem.BaseActivity;
 import com.kepler.notificationsystem.R;
-import com.kepler.notificationsystem.admin.adapter.ExpandableListAdapter;
 import com.kepler.notificationsystem.admin.adapter.SelectStudentAdapter;
-import com.kepler.notificationsystem.admin.adapter.StudentAdapter;
 import com.kepler.notificationsystem.dao.StudentParent;
 import com.kepler.notificationsystem.services.SimpleNetworkHandler;
 import com.kepler.notificationsystem.services.Student;
-import com.kepler.notificationsystem.student.Profile;
 import com.kepler.notificationsystem.support.EmptyRecyclerView;
-import com.kepler.notificationsystem.support.OnViewActionListener;
 import com.kepler.notificationsystem.support.Params;
 import com.kepler.notificationsystem.support.Utils;
 

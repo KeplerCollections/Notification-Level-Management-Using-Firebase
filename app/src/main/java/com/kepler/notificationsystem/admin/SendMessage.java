@@ -1,9 +1,6 @@
 package com.kepler.notificationsystem.admin;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,11 +14,10 @@ import android.widget.TextView;
 import com.kepler.notificationsystem.BaseActivity;
 import com.kepler.notificationsystem.R;
 import com.kepler.notificationsystem.Register;
-import com.kepler.notificationsystem.admin.adapter.SelectStudentAdapter;
-import com.kepler.notificationsystem.support.OnYearSelect;
+import com.kepler.notificationsystem.notification.Config;
+import com.kepler.notificationsystem.support.OnBatchSelect;
+import com.kepler.notificationsystem.support.Params;
 import com.kepler.notificationsystem.support.Utils;
-
-import java.util.Calendar;
 
 import butterknife.BindView;
 
@@ -42,6 +38,7 @@ public class SendMessage extends BaseActivity implements View.OnClickListener {
     Button send_message;
     @BindView(R.id.remove_file)
     ImageButton remove_file;
+    private String send_to_ = Config.TOPIC_GLOBAL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +50,14 @@ public class SendMessage extends BaseActivity implements View.OnClickListener {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
+                    case 0:
+                        send_to_ = Utils.getType(null,null);
+                        break;
                     case 1:
-                        Register.openYearPickerDialog(SendMessage.this, new OnYearSelect() {
+                        Utils.getBatchDialog(SendMessage.this, new OnBatchSelect() {
                             @Override
-                            public void onYearSet(String year) {
-
+                            public void onBatchSelect(String course, String batch) {
+                                send_to_ = Utils.getType(course, batch);
                             }
                         });
                         break;

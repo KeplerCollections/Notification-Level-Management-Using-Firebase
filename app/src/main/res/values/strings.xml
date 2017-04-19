@@ -56,7 +56,6 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <string name="settings">Settings</string>
-    <string name="select_batch">Select Batch Year</string>
     <string name="student_list">Students List</string>
     <string name="select">Select</string>
     <string name="edit_profile">Edit Profile</string>
@@ -80,11 +79,29 @@
     <string name="msg_demo">First, you specify the table where you want to remove rows after the DELETE FROM clause. Second, you add a search condition in the WHERE clause to identify which row to remove. The WHERE clause is an optional part of the DELETE statement.</string>
     <string name="empty">Empty</string>
     <string name="click_here">Click here to download attachments</string>
+    <string name="bca">BCA</string>
+    <string name="mca">MCA</string>
+    <string name="first">First Year</string>
+    <string name="second">Second Year</string>
+    <string name="third">Third Year</string>
     >
 
     <array name="type">
         <item>@string/student</item>
         <item>@string/admin</item>
+    </array>
+    <array name="course">
+        <item>@string/bca</item>
+        <item>@string/mca</item>
+    </array>
+    <array name="bca_years">
+        <item>@string/first</item>
+        <item>@string/second</item>
+    </array>
+    <array name="mca_years">
+        <item>@string/first</item>
+        <item>@string/second</item>
+        <item>@string/third</item>
     </array>
     <array name="drawer_items">
         <item>@string/home</item>
@@ -98,7 +115,7 @@
     </array>
     <array name="send_to">
         <item>@string/send_message_to_all</item>
-        <item>@string/send_to_batch</item>
+        <!--<item>@string/send_to_batch</item>-->
         <item>@string/custom</item>
     </array>
 </resources>

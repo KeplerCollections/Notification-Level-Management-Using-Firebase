@@ -74,7 +74,7 @@ public class SearchResultsActivity extends BaseActivity implements OnViewActionL
             String query = intent.getStringExtra(SearchManager.QUERY);
             //use the query to search your data somehow
             search_for.setText("You are searching for \"" + query + "\"");
-            student = new com.kepler.notificationsystem.dao.Student(query,null,null,null,null,null, null);
+            student = new com.kepler.notificationsystem.dao.Student(query,null,null,null);
             load();
         } else {
             onBackPressed();

@@ -1,27 +1,22 @@
 package com.kepler.notificationsystem;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.NumberPicker;
-import android.widget.TextView;
+import android.widget.Spinner;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.kepler.notificationsystem.dao.Student;
 import com.kepler.notificationsystem.support.Logger;
-import com.kepler.notificationsystem.support.OnYearSelect;
 import com.kepler.notificationsystem.support.Params;
 import com.kepler.notificationsystem.services.SimpleNetworkHandler;
 import com.kepler.notificationsystem.support.Utils;
@@ -47,8 +42,10 @@ public class Register extends BaseActivity implements View.OnClickListener {
     EditText rn;
     @BindView(R.id.register)
     Button register;
-    @BindView(R.id.select_batch)
-    TextView select_batch;
+    @BindView(R.id.select_year)
+    Spinner select_year;
+    @BindView(R.id.select_course)
+    Spinner select_coursee;
     private FirebaseAuth mAuth;
 
     @Override
@@ -56,9 +53,29 @@ public class Register extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAuth = mAuth.getInstance();
-        System.out.println(FirebaseInstanceId.getInstance().getToken());
+        select_year.setVisibility(View.VISIBLE);
+        select_coursee.setVisibility(View.VISIBLE);
         register.setOnClickListener(this);
-        select_batch.setOnClickListener(this);
+        select_coursee.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ArrayAdapter<String> dataAdapter;
+                if (i == 0) {
+                    dataAdapter = new ArrayAdapter<String>(Register.this,
+                            android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.bca_years));
+                } else {
+                    dataAdapter = new ArrayAdapter<String>(Register.this,
+                            android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.mca_years));
+                }
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                select_year.setAdapter(dataAdapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
@@ -95,45 +112,32 @@ public class Register extends BaseActivity implements View.OnClickListener {
                     Utils.toast(getApplicationContext(), R.string.rn_error_msg);
                     return;
                 }
-                if (select_batch.getText().toString().toLowerCase().length() == 0) {
-                    Utils.toast(getApplicationContext(), R.string.batch_error_msg);
-                    return;
-                }
                 register();
-                break;
-            case R.id.select_batch:
-                openYearPickerDialog(Register.this, new OnYearSelect() {
-
-                    @Override
-                    public void onYearSet(String year) {
-                        select_batch.setText(year);
-                    }
-                });
                 break;
         }
     }
 
-    public static void openYearPickerDialog(BaseActivity activity, final OnYearSelect onYearSelect) {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(R.string.select_batch);
-        final NumberPicker np = new NumberPicker(activity);
-        final int year = Calendar.getInstance().get(Calendar.YEAR);
-        np.setMinValue(year - Utils.BEFORE_CRT_YEAR);
-        np.setMaxValue(year + Utils.AFTER_CRT_YEAR);
-        np.setValue(year);
-        np.setWrapSelectorWheel(false);
-        builder.setPositiveButton(R.string.select, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                onYearSelect.onYearSet(String.valueOf(np.getValue()));
-            }
-        });
-        builder.setView(np);
-        AlertDialog d = builder.create();
-        d.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        d.show();
-    }
+//    public static void openYearPickerDialog(BaseActivity activity, final OnBatchSelect onYearSelect) {
+//
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+//        builder.setTitle(R.string.select_batch);
+//        final NumberPicker np = new NumberPicker(activity);
+//        final int year = Calendar.getInstance().get(Calendar.YEAR);
+//        np.setMinValue(year - Utils.BEFORE_CRT_YEAR);
+//        np.setMaxValue(year + Utils.AFTER_CRT_YEAR);
+//        np.setValue(year);
+//        np.setWrapSelectorWheel(false);
+//        builder.setPositiveButton(R.string.select, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                onYearSelect.onYearSet(String.valueOf(np.getValue()));
+//            }
+//        });
+//        builder.setView(np);
+//        AlertDialog d = builder.create();
+//        d.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        d.show();
+//    }
 
     private void register() {
         mAuth.createUserWithEmailAndPassword(username.getText().toString(), password.getText().toString())
@@ -152,7 +156,8 @@ public class Register extends BaseActivity implements View.OnClickListener {
                             Utils.toast(getApplicationContext(), task.getException().getMessage());
                         } else {
                             final Student user = new Student(String.valueOf(name.getText()), String.valueOf(username.getText()),
-                                    String.valueOf(password.getText()), String.valueOf(rn.getText()), String.valueOf(cn.getText()),String.valueOf(select_batch.getText()), null);
+                                    String.valueOf(password.getText()), String.valueOf(rn.getText()), String.valueOf(cn.getText()), String.valueOf(select_coursee.getSelectedItem()), select_year.getSelectedItemPosition() + 1,
+                                    null, Utils.getBatch(select_year.getSelectedItemPosition() + 1));
                             com.kepler.notificationsystem.services.Student.register(getApplicationContext(), user, new SimpleNetworkHandler() {
 
                                 @Override
@@ -160,7 +165,7 @@ public class Register extends BaseActivity implements View.OnClickListener {
                                     try {
                                         final JSONObject jsonObject = new JSONObject(responseBody.toString());
                                         if (jsonObject.getBoolean(Params.STATUS)) {
-                                             task.getResult().getUser().sendEmailVerification()
+                                            task.getResult().getUser().sendEmailVerification()
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
@@ -206,6 +211,7 @@ public class Register extends BaseActivity implements View.OnClickListener {
                 });
 
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -33,13 +33,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.kepler.notificationsystem.BaseActivity;
 import com.kepler.notificationsystem.Login;
 import com.kepler.notificationsystem.R;
-import com.kepler.notificationsystem.Register;
 import com.kepler.notificationsystem.admin.adapter.NavigationAdapter;
 import com.kepler.notificationsystem.admin.frag.Home;
-import com.kepler.notificationsystem.admin.frag.Settings;
 import com.kepler.notificationsystem.notification.Config;
 import com.kepler.notificationsystem.support.Logger;
-import com.kepler.notificationsystem.support.OnYearSelect;
+import com.kepler.notificationsystem.support.OnBatchSelect;
 import com.kepler.notificationsystem.support.Params;
 import com.kepler.notificationsystem.support.Utils;
 
@@ -290,18 +288,14 @@ public class AdminMain extends BaseActivity implements SearchView.OnQueryTextLis
                 Utils.startActivity(this, SendMessage.class, args, false);
                 break;
             case 2:
-                Register.openYearPickerDialog(AdminMain.this,new OnYearSelect(){
+                Utils.getBatchDialog(AdminMain.this, new OnBatchSelect() {
                     @Override
-                    public void onYearSet(String year) {
-                        args.putString(Params.BATCH,year);
+                    public void onBatchSelect(String course, String batch) {
+                        args.putString(Params.COURSE, course);
+                        args.putString(Params.BATCH, batch);
                         Utils.startActivity(AdminMain.this, Students.class, args, false);
                     }
                 });
-                break;
-            case 3:
-                setTitle(String.valueOf(getDrawerItems().get(position)));
-                fragment = new Settings();
-                replaceFragment(fragment, args);
                 break;
             default:
                 setTitle(String.valueOf(getDrawerItems().get(position)));

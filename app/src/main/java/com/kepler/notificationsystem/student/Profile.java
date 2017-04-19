@@ -60,7 +60,7 @@ public class Profile extends BaseActivity implements View.OnClickListener {
         if (student != null) {
             setView();
         } else if (bundle.getString(Params.EMAILID, null) != null) {
-            student = new Student(null, getIntent().getExtras().getString(Params.EMAILID, null), null, null, null, null, null);
+            student = new Student(null, getIntent().getExtras().getString(Params.EMAILID, null), null, null);
             load();
         } else {
             onBackPressed();
@@ -199,7 +199,8 @@ public class Profile extends BaseActivity implements View.OnClickListener {
                             + "<br><br><font color='#FF4081'><big><big>ROLL NUMBER</font></big></big><br>" + student.getRn()
                             + "<br><br><font color='#FF4081'><big><big>PASSWORD</font></big></big><br>********"
                             + "<br><br><font color='#FF4081'><big><big>CONTACT NUMBER</font></big></big><br>" + student.getCn()
-                            + "<br><br><font color='#FF4081'><big><big>BATCH YEAR</font></big></big><br>" + student.getBatch()
+                            + "<br><br><font color='#FF4081'><big><big>COURSE</font></big></big><br>" + student.getCourse()
+                            + "<br><br><font color='#FF4081'><big><big>YEAR</font></big></big><br>" + getResources().getString(Utils.getYear(student.getYear()))
                     , Html.FROM_HTML_MODE_LEGACY));
         } else {
             content.setText(Html.fromHtml(
@@ -208,7 +209,9 @@ public class Profile extends BaseActivity implements View.OnClickListener {
                             + "<br><br><font color='#FF4081'><big><big>ROLL NUMBER</font></big></big><br>" + student.getRn()
                             + "<br><br><font color='#FF4081'><big><big>PASSWORD</font></big></big><br>********"
                             + "<br><br><font color='#FF4081'><big><big>CONTACT NUMBER</font></big></big><br>" + student.getCn()
-                            + "<br><br><font color='#FF4081'><big><big>BATCH YEAR</font></big></big><br>" + student.getBatch()));
+                            + "<br><br><font color='#FF4081'><big><big>COURSE</font></big></big><br>" + student.getCourse().toUpperCase()
+                            + "<br><br><font color='#FF4081'><big><big>YEAR</font></big></big><br>" + getResources().getString(Utils.getYear(student.getYear()))
+            ));
         }
         if (!update_profile.isEnabled()) {
             update_profile.setEnabled(true);

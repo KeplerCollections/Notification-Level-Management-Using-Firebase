@@ -25,6 +25,10 @@ public class Student implements Parcelable {
     @Expose
     private String cn;
     @Expose
+    private String course;
+    @Expose
+    private int year;
+    @Expose
     private String batch;
     @Expose
     private String device_id;
@@ -33,65 +37,37 @@ public class Student implements Parcelable {
     @Expose
     private String reg_id;
 
-    public Student(String name, String emailid, String password, String rn, String cn, String batch, String img) {
+    public Student(String name, String emailid, String password, String rn, String cn,String course,int year,String img,String batch) {
         this.name = name;
         this.emailid = emailid;
         this.password = password;
         this.rn = rn;
         this.cn = cn;
-        this.batch = batch;
+        this.course = course;
+        this.year = year;
         this.img = img;
+        this.batch = batch;
     }
-
+    public Student(String name, String emailid, String course, String batch) {
+        this.name = name;
+        this.emailid = emailid;
+        this.course = course;
+        this.batch = batch;
+    }
     public Student() {
 
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmailid(String emailid) {
-        this.emailid = emailid;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRn(String rn) {
-        this.rn = rn;
-    }
-
-    public void setCn(String cn) {
-        this.cn = cn;
-    }
-
-    public void setBatch(String batch) {
-        this.batch = batch;
-    }
-
-    public void setDevice_id(String device_id) {
-        this.device_id = device_id;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
 
     protected Student(Parcel in) {
         id = in.readString();
         name = in.readString();
         emailid = in.readString();
-        password = in.readString();
         rn = in.readString();
         cn = in.readString();
-        batch = in.readString();
-        device_id = in.readString();
+        course = in.readString();
+        year = in.readInt();
         img = in.readString();
     }
 
@@ -127,16 +103,24 @@ public class Student implements Parcelable {
         return cn;
     }
 
+    public String getCourse() {
+        return course;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
     public String getBatch() {
         return batch;
     }
 
-    public String getDevice_id() {
-        return device_id;
-    }
-
     public String getImg() {
         return img;
+    }
+
+    public String getReg_id() {
+        return reg_id;
     }
 
     @Override
@@ -149,15 +133,22 @@ public class Student implements Parcelable {
         parcel.writeString(id);
         parcel.writeString(name);
         parcel.writeString(emailid);
-        parcel.writeString(password);
         parcel.writeString(rn);
         parcel.writeString(cn);
-        parcel.writeString(batch);
-        parcel.writeString(device_id);
+        parcel.writeString(course);
+        parcel.writeInt(year);
         parcel.writeString(img);
     }
 
-    public String getReg_id() {
-        return reg_id;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRn(String rn) {
+        this.rn = rn;
+    }
+
+    public void setCn(String cn) {
+        this.cn = cn;
     }
 }
