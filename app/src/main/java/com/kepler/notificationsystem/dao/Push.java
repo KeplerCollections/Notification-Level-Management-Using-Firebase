@@ -1,5 +1,8 @@
 package com.kepler.notificationsystem.dao;
 
+import com.kepler.notificationsystem.services.*;
+import com.kepler.notificationsystem.services.Student;
+
 /**
  * Created by Amit on 17-04-2017.
  */
@@ -13,8 +16,17 @@ public class Push {
     private String title;
     private String message;
     private String timestamp;
-    private String topic;
+    private String push_type;
     private String topic_name;
+    private String reg_id;
+
+    public String getReg_id() {
+        return reg_id;
+    }
+
+    public void setReg_id(String reg_id) {
+        this.reg_id = reg_id;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -24,12 +36,12 @@ public class Push {
         return image;
     }
 
-    public String getTopic() {
-        return topic;
+    public String getPush_type() {
+        return push_type;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
+    public void setPush_type(String push_type) {
+        this.push_type = push_type;
     }
 
     public String getTopic_name() {

@@ -132,9 +132,9 @@ public class Students extends BaseActivity implements OnViewActionListener {
 
     @Override
     public void onSendMessageBtnClicked(com.kepler.notificationsystem.dao.Student student) {
-//        Bundle bundle=new Bundle();
-//        bundle.putParcelable(Params.DATA,student);
-        Utils.startActivity(this, SendMessage.class, null, false);
+        Bundle bundle=new Bundle();
+        bundle.putString(Params.REG_ID,student.getReg_id());
+        Utils.startActivity(this,SendMessage.class,bundle,false);
     }
 
     private class MyTextWatcher implements TextWatcher {

@@ -12,15 +12,15 @@
         android:id="@+id/m_update_password"
         android:enabled="true"
         android:title="@string/update_password"
-        app:showAsAction="never"></item>
+        app:showAsAction="collapseActionView|ifRoom"></item>
     <item
         android:id="@+id/m_update_email"
         android:enabled="true"
         android:title="@string/update_email"
-        app:showAsAction="never"></item>
+        app:showAsAction="collapseActionView|ifRoom"></item>
     <item
         android:id="@+id/m_logout"
         android:enabled="true"
         android:title="@string/logout"
-        app:showAsAction="never"></item>
+        app:showAsAction="collapseActionView|ifRoom"></item>
 </menu>

@@ -36,6 +36,8 @@ public class Student implements Parcelable {
     private String img;
     @Expose
     private String reg_id;
+    @Expose
+    private int is_login;
 
     public Student(String name, String emailid, String password, String rn, String cn,String course,int year,String img,String batch) {
         this.name = name;
@@ -150,5 +152,9 @@ public class Student implements Parcelable {
 
     public void setCn(String cn) {
         this.cn = cn;
+    }
+
+    public int getIs_login() {
+        return is_login;
     }
 }

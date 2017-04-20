@@ -60,7 +60,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
     TextView forgot;
     @BindView(R.id.register)
     TextView register;
-    private SharedPreferences pref;
+//    private SharedPreferences pref;
     private FirebaseAuth mAuth;
     private String mEmail;
 //    private FirebaseAuth.AuthStateListener mAuthListener;
@@ -68,7 +68,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+//        pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         mAuth = FirebaseAuth.getInstance();
         login.setOnClickListener(this);
         register.setOnClickListener(this);
@@ -81,13 +81,13 @@ public class Login extends BaseActivity implements View.OnClickListener {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
                     username.setText("developer.kepler@gmail.com");
-                    password.setText("qwerty");
+//                    password.setText("qwerty");
                     username.setEnabled(true);
                     forgot.setEnabled(true);
                     register.setEnabled(true);
                 } else {
                     username.setText("admin");
-                    password.setText("qwerty");
+//                    password.setText("qwerty");
                     username.setEnabled(false);
                     forgot.setEnabled(false);
                     register.setEnabled(false);

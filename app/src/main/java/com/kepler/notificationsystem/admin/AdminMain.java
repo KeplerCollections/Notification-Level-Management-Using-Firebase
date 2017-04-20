@@ -30,17 +30,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.kepler.notificationsystem.BaseActivity;
 import com.kepler.notificationsystem.Login;
 import com.kepler.notificationsystem.R;
 import com.kepler.notificationsystem.admin.adapter.NavigationAdapter;
 import com.kepler.notificationsystem.admin.frag.Home;
 import com.kepler.notificationsystem.notification.Config;
+import com.kepler.notificationsystem.notification.MyFirebaseInstanceIDService;
 import com.kepler.notificationsystem.support.Logger;
 import com.kepler.notificationsystem.support.OnBatchSelect;
 import com.kepler.notificationsystem.support.Params;
 import com.kepler.notificationsystem.support.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -157,6 +160,12 @@ public class AdminMain extends BaseActivity implements SearchView.OnQueryTextLis
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                try {
+                    FirebaseInstanceId.getInstance().deleteInstanceId();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//                MyFirebaseInstanceIDService.removeRegIdInPref(getApplicationContext());
                 pref.edit().remove(Params.USER).commit();
                 FirebaseAuth.getInstance().signOut();
                 doubleBackToExitPressedOnce = true;

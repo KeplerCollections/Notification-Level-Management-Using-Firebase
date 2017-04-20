@@ -1,7 +1,9 @@
 package com.kepler.notificationsystem.admin;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,15 +13,23 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.kepler.notificationsystem.BaseActivity;
 import com.kepler.notificationsystem.R;
 import com.kepler.notificationsystem.Register;
+import com.kepler.notificationsystem.dao.Push;
 import com.kepler.notificationsystem.notification.Config;
+import com.kepler.notificationsystem.services.SimpleNetworkHandler;
+import com.kepler.notificationsystem.services.Student;
 import com.kepler.notificationsystem.support.OnBatchSelect;
 import com.kepler.notificationsystem.support.Params;
 import com.kepler.notificationsystem.support.Utils;
 
+import org.json.JSONObject;
+
 import butterknife.BindView;
+import cz.msebera.android.httpclient.Header;
 
 public class SendMessage extends BaseActivity implements View.OnClickListener {
 
@@ -38,7 +48,7 @@ public class SendMessage extends BaseActivity implements View.OnClickListener {
     Button send_message;
     @BindView(R.id.remove_file)
     ImageButton remove_file;
-    private String send_to_ = Config.TOPIC_GLOBAL;
+    final Push push = new Push();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +56,30 @@ public class SendMessage extends BaseActivity implements View.OnClickListener {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         send_message.setOnClickListener(this);
         remove_file.setOnClickListener(this);
+        if (getIntent().getExtras() != null && getIntent().getExtras().getString(Params.REG_ID, null) != null) {
+            send_to.setVisibility(View.GONE);
+            push.setReg_id(getIntent().getExtras().getString(Params.REG_ID, null));
+            push.setPush_type(Config.PUSH_TYPE_INDIVIDUAL);
+        } else {
+            push.setPush_type(Config.PUSH_TYPE_TOPIC);
+            push.setTopic_name(Config.TOPIC_GLOBAL);
+        }
         send_to.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
                     case 0:
-                        send_to_ = Utils.getType(null,null);
+                        push.setTopic_name(Utils.getType(null, null));
                         break;
                     case 1:
                         Utils.getBatchDialog(SendMessage.this, new OnBatchSelect() {
                             @Override
                             public void onBatchSelect(String course, String batch) {
-                                send_to_ = Utils.getType(course, batch);
+                                if (course == null || batch == null) {
+                                    send_to.setSelection(0);
+                                } else {
+                                    push.setTopic_name(Utils.getType(course, batch));
+                                }
                             }
                         });
                         break;
@@ -95,7 +117,53 @@ public class SendMessage extends BaseActivity implements View.OnClickListener {
     }
 
     private void sendMessage() {
+        push.setTitle(_title.getText().toString());
+        push.setMessage(_msg.getText().toString());
+        push.setMsg_type(getMessageTpe());
+        com.kepler.notificationsystem.services.Student.sendPush(getApplicationContext(), push, new SimpleNetworkHandler() {
+            ProgressDialog progressDialog;
 
+            @Override
+            public void onStart() {
+                super.onStart();
+                progressDialog = ProgressDialog.show(SendMessage.this, "", getResources().getString(R.string.sending));
+            }
+
+            @Override
+            public void onResult(int statusCode, Header[] headers, Object responseBody) {
+                try {
+                    final JSONObject jsonObject = new JSONObject(responseBody.toString());
+                    if (jsonObject.getBoolean(Params.STATUS)) {
+                        JSONObject dataJsonObject = new JSONObject(jsonObject.getString(Params.DATA));
+                        if (dataJsonObject.getInt("success") == 0) {
+                            Utils.toast(getApplicationContext(), R.string.failed);
+                        } else {
+                            Utils.toast(getApplicationContext(), R.string.message_sent);
+                        }
+                    } else {
+                        Utils.toast(getApplicationContext(), R.string.failed);
+                    }
+                } catch (Exception e) {
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private int getMessageTpe() {
+        switch (_type.getSelectedItemPosition()) {
+            case 1:
+                return Student.IMAPORTANT_TYPE;
+            case 2:
+                return Student.WARNING_TYPE;
+            default:
+                return Student.NORMAL_TYPE;
+        }
     }
 
     @Override

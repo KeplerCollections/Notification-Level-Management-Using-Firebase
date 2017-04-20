@@ -24,11 +24,11 @@ public class Student {
     private static final String SELECT = "select";
     private static final String REGISTER = "register";
     public static final String UPDATE_PIC = "update_pic";
+    public static final String PUSH= "push";
     public static final int OFFSET = 30;
     public static final int NORMAL_TYPE = 111;
     public static final int IMAPORTANT_TYPE = 222;
     public static final int WARNING_TYPE = 333;
-    private static final String TOPIC = "topic";
 
     public static void register(Context context, com.kepler.notificationsystem.dao.Student student, SimpleNetworkHandler simpleNetworkHandler) {
         RequestParams requestParams = new RequestParams();
@@ -55,15 +55,17 @@ public class Student {
 //    }
 
     public static void sendPush(Context context, Push push, SimpleNetworkHandler simpleNetworkHandler) {
-//        if (email_id == null)
-//            return;
-//        RequestParams requestParams = new RequestParams();
-//        requestParams.put(Params.EMAILID, email_id);
-//        requestParams.put(Params.NEW_EMAILID, new_email_id);
-//        requestParams.put(Params.ACTION_TYPE, String.valueOf(UPDATE_EMAIL));
-//        requestParams.put(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
-//        requestParams.put(Params.ACTION, UPDATE);
-//        load(null, requestParams, simpleNetworkHandler);
+        RequestParams requestParams = new RequestParams();
+        requestParams.put(Params.MESSAGE_TYPE, push.getMsg_type());
+//        requestParams.put(Params.FILE, push.getFile());
+        requestParams.put(Params.TITLE, push.getTitle());
+        requestParams.put(Params.MESSAGE, push.getMessage());
+        requestParams.put(Params.PUSH_TYPE, push.getPush_type());
+        requestParams.put(Params.TOPIC_NAME, push.getTopic_name());
+        requestParams.put(Params.REG_ID, push.getReg_id());
+        requestParams.put(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
+        requestParams.put(Params.ACTION, PUSH);
+        load(null, requestParams, simpleNetworkHandler);
     }
 
     public static void updateEmailId(Context context, String email_id, String new_email_id, SimpleNetworkHandler simpleNetworkHandler) {

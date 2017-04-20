@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.kepler.notificationsystem.Login;
 import com.kepler.notificationsystem.admin.db.DatabaseHelper;
 import com.kepler.notificationsystem.dao.Push;
 import com.kepler.notificationsystem.student.Main;
@@ -31,7 +32,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Logger.e(TAG, "From: " + remoteMessage.getFrom());
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF_USER, 0);
-        if (pref.getString(Params.USER, null) == null || pref.getString(Params.USER, null).equals(Utils.ADMIN_EMAIL_ID) || remoteMessage == null)
+        if (pref.getString(Params.USER, null).equals(Utils.ADMIN_EMAIL_ID) || remoteMessage == null)
             return;
 
         // Check if message contains a data payload.
@@ -40,7 +41,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             try {
                 JSONObject json = new JSONObject(remoteMessage.getData().toString());
-                handleDataMessage(json);
+                handleDataMessage(json, pref);
             } catch (Exception e) {
                 Logger.e(TAG, "Exception: " + e.getMessage());
             }
@@ -69,7 +70,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void handleDataMessage(JSONObject json) {
+    private void handleDataMessage(JSONObject json, SharedPreferences pref) {
         Logger.e(TAG, "push json: " + json.toString());
 
         try {
@@ -114,8 +115,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationUtils.playNotificationSound();
             } else {
                 // app is in background, show the notification in notification tray
-                Intent resultIntent = new Intent(getApplicationContext(), Main.class);
-                resultIntent.putExtra(Params.MESSAGE, "message");
+                Intent resultIntent;
+                if (pref.getString(Params.USER, null) == null) {
+                    resultIntent = new Intent(getApplicationContext(), Login.class);
+                } else {
+                    resultIntent = new Intent(getApplicationContext(), Main.class);
+                    resultIntent.putExtra(Params.MESSAGE, "message");
+                }
 
                 // check for image attachment
                 if (TextUtils.isEmpty(imageUrl)) {

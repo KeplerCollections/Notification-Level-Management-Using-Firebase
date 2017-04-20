@@ -36,6 +36,7 @@ import com.kepler.notificationsystem.admin.db.DatabaseHelper;
 import com.kepler.notificationsystem.dao.Push;
 import com.kepler.notificationsystem.dao.StudentParent;
 import com.kepler.notificationsystem.notification.Config;
+import com.kepler.notificationsystem.notification.MyFirebaseInstanceIDService;
 import com.kepler.notificationsystem.notification.NotificationUtils;
 import com.kepler.notificationsystem.services.Student;
 import com.kepler.notificationsystem.student.adapter.MessageAdapter;
@@ -48,6 +49,7 @@ import com.kepler.notificationsystem.support.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -91,8 +93,8 @@ public class Main extends BaseActivity {
                     if (push != null) {
                         add(push);
                     }
-                    Utils.toast(getApplicationContext(),"New Messge Received");
-                    recycler_view.getLayoutManager().scrollToPosition(messageAdapter.getItemCount()-1);
+                    Utils.toast(getApplicationContext(), "New Messge Received");
+                    recycler_view.getLayoutManager().scrollToPosition(messageAdapter.getItemCount() - 1);
 //                    String message = intent.getStringExtra("message");
 //                    Logger.e(TAG, "Push notification: " + message);
 
@@ -195,10 +197,17 @@ public class Main extends BaseActivity {
                         Gson gson = new Gson();
                         StudentParent fromJson = gson.fromJson(responseBody.toString(), StudentParent.class);
                         if (fromJson.isStatus()) {
-                                pref.edit().remove(Params.USER).commit();
-                                FirebaseAuth.getInstance().signOut();
-                                doubleBackToExitPressedOnce = true;
-                                Utils.startActivity(Main.this, Login.class, null, true, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            Auth.GoogleSignInApi.
+                            try {
+                                FirebaseInstanceId.getInstance().si
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+//                            MyFirebaseInstanceIDService.removeRegIdInPref(getApplicationContext());
+                            pref.edit().remove(Params.USER).commit();
+                            FirebaseAuth.getInstance().signOut();
+                            doubleBackToExitPressedOnce = true;
+                            Utils.startActivity(Main.this, Login.class, null, true, Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         } else {
                             Utils.toast(getApplicationContext(), fromJson.getMessage());
                         }

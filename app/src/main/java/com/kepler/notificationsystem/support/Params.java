@@ -15,6 +15,7 @@ public class Params {
     public static final String COURSE = "course";
     public static final String YEAR = "year";
     public static final String MESSAGE = "message";
+    public static final String MESSAGE_TYPE = "msg_type";
     public static final String REG_ID = "regId";
     public static final String TOKEN = "token";
     public static final String PREV_USER = "prev_user";
@@ -31,4 +32,7 @@ public class Params {
     public static final String ID = "id";
     public static final String FILE = "file";
     public static final String FILE_NAME = "file_name";
+    public static final String TOPIC_NAME = "topic_name";
+    public static final String PUSH_TYPE = "push_type";
+    public static final String TITLE = "title";
 }

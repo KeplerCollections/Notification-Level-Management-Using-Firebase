@@ -14,11 +14,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login" />
-        <activity android:name=".Register" />
-        <activity android:name=".student.Main" />
+        <activity android:name=".Login"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Register"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".student.Main"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Splash"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,23 +53,30 @@
                android:name="com.google.firebase.messaging.default_notification_color"
                android:resource="@color/colorAccent" />-->
         <!-- ./Firebase Notifications -->
-        <activity android:name=".admin.AdminMain">
+        <activity android:name=".admin.AdminMain"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".admin.SearchResultsActivity">
+        <activity android:name=".admin.SearchResultsActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
         <activity
             android:name=".admin.Students"
-            android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".admin.SendMessage" />
-        <activity android:name=".student.Update" />
-        <activity android:name=".student.Profile" />
-        <activity android:name=".admin.SelectStudents"></activity>
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".admin.SendMessage"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".student.Update"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".student.Profile"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".admin.SelectStudents"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

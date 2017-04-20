@@ -27,8 +27,6 @@ import java.util.Calendar;
 
 public class Utils {
     public static final String ADMIN_EMAIL_ID = "developer.amitjaiswal@gmail.com";
-    public static final int BEFORE_CRT_YEAR = 2;
-//    public static final int AFTER_CRT_YEAR = 4;
 
     public static void startActivity(Context context, Class<? extends BaseActivity> activityClass, Bundle bundle, boolean finish) {
         Intent intent = new Intent(context, activityClass);
@@ -96,6 +94,7 @@ public class Utils {
 
     public static void getBatchDialog(final BaseActivity activity, final OnBatchSelect onBatchSelect) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setCancelable(false);
         builder.setTitle(R.string.select);
         final View view = activity.getLayoutInflater().inflate(R.layout.select_, null);
         view.setPadding(10, 10, 10, 10);
@@ -130,6 +129,12 @@ public class Utils {
                 onBatchSelect.onBatchSelect(String.valueOf(select_course.getSelectedItem()).toLowerCase(), getBatch(select_year.getSelectedItemPosition() + 1));
             }
         });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                onBatchSelect.onBatchSelect(null,null);
+            }
+        });
         builder.setView(view);
         AlertDialog d = builder.create();
         d.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -160,4 +165,5 @@ public class Utils {
                 return R.string.third;
         }
     }
+
 }

@@ -84,6 +84,8 @@
     <string name="first">First Year</string>
     <string name="second">Second Year</string>
     <string name="third">Third Year</string>
+    <string name="message_sent">Message Sent</string>
+    <string name="sending">sending...</string>
     >
 
     <array name="type">
@@ -97,11 +99,11 @@
     <array name="bca_years">
         <item>@string/first</item>
         <item>@string/second</item>
+        <item>@string/third</item>
     </array>
     <array name="mca_years">
         <item>@string/first</item>
         <item>@string/second</item>
-        <item>@string/third</item>
     </array>
     <array name="drawer_items">
         <item>@string/home</item>
