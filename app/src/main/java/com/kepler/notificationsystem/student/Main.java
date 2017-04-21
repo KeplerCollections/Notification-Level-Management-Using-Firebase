@@ -197,12 +197,6 @@ public class Main extends BaseActivity {
                         Gson gson = new Gson();
                         StudentParent fromJson = gson.fromJson(responseBody.toString(), StudentParent.class);
                         if (fromJson.isStatus()) {
-                            Auth.GoogleSignInApi.
-                            try {
-                                FirebaseInstanceId.getInstance().si
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
 //                            MyFirebaseInstanceIDService.removeRegIdInPref(getApplicationContext());
                             pref.edit().remove(Params.USER).commit();
                             FirebaseAuth.getInstance().signOut();

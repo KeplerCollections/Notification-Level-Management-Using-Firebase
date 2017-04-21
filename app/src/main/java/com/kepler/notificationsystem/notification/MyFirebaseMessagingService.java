@@ -21,18 +21,22 @@ import com.kepler.notificationsystem.support.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.kepler.notificationsystem.support.Params.BATCH;
+import static com.kepler.notificationsystem.support.Params.COURSE;
+
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
 
     private NotificationUtils notificationUtils;
+    private SharedPreferences pref;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Logger.e(TAG, "From: " + remoteMessage.getFrom());
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF_USER, 0);
-        if (pref.getString(Params.USER, null).equals(Utils.ADMIN_EMAIL_ID) || remoteMessage == null)
+        pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF_USER, 0);
+        if (pref.getString(Params.USER, null) == null || pref.getString(Params.USER, null).equals(Utils.ADMIN_EMAIL_ID) || remoteMessage == null)
             return;
 
         // Check if message contains a data payload.
@@ -82,20 +86,34 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String imageUrl = data.getString("image");
             String timestamp = data.getString("timestamp");
             String file = data.getString("file");
+            String course = data.getString("course");
+            String batch = data.getString("batch");
             int msg_type = data.getInt("msg_type");
+            String emailid = data.getString("emailid");
             JSONObject payload = data.getJSONObject("payload");
-
+            if (!(course.equalsIgnoreCase("all") && batch.equalsIgnoreCase("all"))) {
+                if (!(course.equalsIgnoreCase(pref.getString(COURSE, "course")) || batch.equalsIgnoreCase(pref.getString(BATCH, "batch")))) {
+                    return;
+                }
+                if (emailid.trim().length() > 0 && !emailid.trim().equals(pref.getString(Params.USER, null))) {
+                    return;
+                }
+            }
             Push push = new Push();
             push.setTitle(title);
             push.setMessage(message);
             push.setIs_background(isBackground);
             push.setImage(imageUrl);
+            push.setCourse(course);
+            push.setBatch(batch);
             push.setTimestamp(timestamp);
             push.setFile(file);
             push.setMsg_type(msg_type);
             DatabaseHelper db = new DatabaseHelper(getApplicationContext());
             db.insertMsg(push);
             db.closeDB();
+
+
 //            Logger.e(TAG, "title: " + title);
 //            Logger.e(TAG, "message: " + message);
 //            Logger.e(TAG, "isBackground: " + isBackground);

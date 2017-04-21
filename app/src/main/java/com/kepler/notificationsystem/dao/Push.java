@@ -18,7 +18,18 @@ public class Push {
     private String timestamp;
     private String push_type;
     private String topic_name;
+    private String course;
+    private String batch;
     private String reg_id;
+    private String mEmail;
+
+    public String getmEmail() {
+        return mEmail;
+    }
+
+    public void setmEmail(String mEmail) {
+        this.mEmail = mEmail;
+    }
 
     public String getReg_id() {
         return reg_id;
@@ -78,6 +89,22 @@ public class Push {
 
     public void setMsg_type(int msg_type) {
         this.msg_type = msg_type;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public String getBatch() {
+        return batch;
+    }
+
+    public void setBatch(String batch) {
+        this.batch = batch;
     }
 
     public String getTitle() {

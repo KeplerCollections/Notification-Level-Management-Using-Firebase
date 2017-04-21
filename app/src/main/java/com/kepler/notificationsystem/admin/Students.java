@@ -133,7 +133,7 @@ public class Students extends BaseActivity implements OnViewActionListener {
     @Override
     public void onSendMessageBtnClicked(com.kepler.notificationsystem.dao.Student student) {
         Bundle bundle=new Bundle();
-        bundle.putString(Params.REG_ID,student.getReg_id());
+        bundle.putString(Params.EMAILID,student.getEmailid());
         Utils.startActivity(this,SendMessage.class,bundle,false);
     }
 

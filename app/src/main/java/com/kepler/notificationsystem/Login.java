@@ -60,7 +60,7 @@ public class Login extends BaseActivity implements View.OnClickListener {
     TextView forgot;
     @BindView(R.id.register)
     TextView register;
-//    private SharedPreferences pref;
+    //    private SharedPreferences pref;
     private FirebaseAuth mAuth;
     private String mEmail;
 //    private FirebaseAuth.AuthStateListener mAuthListener;
@@ -240,7 +240,8 @@ public class Login extends BaseActivity implements View.OnClickListener {
 
     private void storeRegIdToServer() {
         if (spinner.getSelectedItemPosition() == 1) {
-            startAdminIntent();
+            storeRegIdInPref();
+            Utils.startActivity(Login.this, AdminMain.class, null, true);
         } else {
             com.kepler.notificationsystem.services.Student.login(getApplicationContext(), mEmail, FirebaseInstanceId.getInstance().getToken(), new SimpleNetworkHandler() {
 
@@ -257,9 +258,10 @@ public class Login extends BaseActivity implements View.OnClickListener {
                     StudentParent fromJson = gson.fromJson(responseBody.toString(), StudentParent.class);
                     if (fromJson.isStatus()) {
                         if (fromJson.getData().size() > 0) {
-                            FirebaseMessaging.getInstance().subscribeToTopic(Utils.getType(fromJson.getData().get(0).getCourse(), fromJson.getData().get(0).getBatch()));
+//                            FirebaseMessaging.getInstance().subscribeToTopic(Utils.getType(fromJson.getData().get(0).getCourse(), fromJson.getData().get(0).getBatch()));
                             FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
-                            startStudentIntent();
+                            storeRegIdInPref(fromJson.getData().get(0));
+                            Utils.startActivity(Login.this, Main.class, null, true);
                         } else {
                             Utils.toast(getApplicationContext(), R.string.failed);
                         }
@@ -278,14 +280,14 @@ public class Login extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private void startAdminIntent() {
-        storeRegIdInPref();
-        Utils.startActivity(Login.this, AdminMain.class, null, true);
-    }
-
-    private void startStudentIntent() {
-        storeRegIdInPref();
-        Utils.startActivity(Login.this, Main.class, null, true);
+    private void storeRegIdInPref(Student student) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF_USER, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Params.USER, mEmail);
+        editor.putString(Params.BATCH, student.getBatch());
+        editor.putString(Params.COURSE, student.getCourse());
+        editor.putInt(Params.YEAR, student.getYear());
+        editor.commit();
     }
 
     private void storeRegIdInPref() {

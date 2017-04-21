@@ -12,6 +12,9 @@ import com.kepler.notificationsystem.support.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kepler.notificationsystem.support.Params.BATCH;
+import static com.kepler.notificationsystem.support.Params.COURSE;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Logcat tag
@@ -84,6 +87,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(IS_BACKGROUND, push.is_background() ? 1 : 0);
         values.put(IMAGE, push.getImage());
         values.put(TIME_STAMP, push.getTimestamp());
+//        values.put(COURSE, push.getCourse());
+//        values.put(BATCH, push.getBatch());
         values.put(FILE, push.getFile());
         values.put(MESSGAE_TYPE, push.getMsg_type());
 

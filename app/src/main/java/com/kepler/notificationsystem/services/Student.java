@@ -24,7 +24,7 @@ public class Student {
     private static final String SELECT = "select";
     private static final String REGISTER = "register";
     public static final String UPDATE_PIC = "update_pic";
-    public static final String PUSH= "push";
+    public static final String PUSH = "push";
     public static final int OFFSET = 30;
     public static final int NORMAL_TYPE = 111;
     public static final int IMAPORTANT_TYPE = 222;
@@ -59,10 +59,13 @@ public class Student {
         requestParams.put(Params.MESSAGE_TYPE, push.getMsg_type());
 //        requestParams.put(Params.FILE, push.getFile());
         requestParams.put(Params.TITLE, push.getTitle());
+        requestParams.put(Params.COURSE, push.getCourse());
+        requestParams.put(Params.EMAILID, push.getmEmail());
+        requestParams.put(Params.BATCH, push.getBatch());
         requestParams.put(Params.MESSAGE, push.getMessage());
         requestParams.put(Params.PUSH_TYPE, push.getPush_type());
         requestParams.put(Params.TOPIC_NAME, push.getTopic_name());
-        requestParams.put(Params.REG_ID, push.getReg_id());
+//        requestParams.put(Params.REG_ID, push.getReg_id());
         requestParams.put(Params.DEVICE_ID, GenerateHashKey.getHashedDeivceId(context));
         requestParams.put(Params.ACTION, PUSH);
         load(null, requestParams, simpleNetworkHandler);
@@ -81,10 +84,10 @@ public class Student {
     }
 
     public static void login(Context context, String email_id, String reg_id, SimpleNetworkHandler simpleNetworkHandler) {
-        login_logout(context,email_id,reg_id,simpleNetworkHandler,LOGIN);
+        login_logout(context, email_id, reg_id, simpleNetworkHandler, LOGIN);
     }
 
-    private static void login_logout(Context context, String email_id, String reg_id, SimpleNetworkHandler simpleNetworkHandler,String action) {
+    private static void login_logout(Context context, String email_id, String reg_id, SimpleNetworkHandler simpleNetworkHandler, String action) {
         if (email_id == null)
             return;
         RequestParams requestParams = new RequestParams();
@@ -96,7 +99,7 @@ public class Student {
     }
 
     public static void logout(Context context, String email_id, String reg_id, SimpleNetworkHandler simpleNetworkHandler) {
-        login_logout(context,email_id,reg_id,simpleNetworkHandler,LOGOUT);
+        login_logout(context, email_id, reg_id, simpleNetworkHandler, LOGOUT);
     }
 
     public static void update(Context context, com.kepler.notificationsystem.dao.Student student, SimpleNetworkHandler simpleNetworkHandler) {

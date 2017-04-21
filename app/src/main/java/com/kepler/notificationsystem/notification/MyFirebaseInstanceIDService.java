@@ -21,7 +21,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
  
         // Saving reg id to shared preferences
-//        storeRegIdInPref(getApplicationContext(),refreshedToken);
+        storeRegIdInPref(getApplicationContext(),refreshedToken);
  
         // sending reg id to your server
         sendRegistrationToServer(refreshedToken);
@@ -37,12 +37,12 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         Logger.e(TAG, "sendRegistrationToServer: " + token);
     }
  
-//    public static void storeRegIdInPref(Context context,String token) {
-//        SharedPreferences pref = context.getSharedPreferences(Config.SHARED_PREF, 0);
-//        SharedPreferences.Editor editor = pref.edit();
-//        editor.putString(Params.REG_ID, token);
-//        editor.commit();
-//    }
+    public static void storeRegIdInPref(Context context,String token) {
+        SharedPreferences pref = context.getSharedPreferences(Config.SHARED_PREF, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Params.REG_ID, token);
+        editor.commit();
+    }
 //
 //    public static void removeRegIdInPref(Context context) {
 //        SharedPreferences pref = context.getSharedPreferences(Config.SHARED_PREF, 0);

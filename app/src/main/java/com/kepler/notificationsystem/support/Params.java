@@ -35,4 +35,5 @@ public class Params {
     public static final String TOPIC_NAME = "topic_name";
     public static final String PUSH_TYPE = "push_type";
     public static final String TITLE = "title";
+    public static final String ALL = "all";
 }

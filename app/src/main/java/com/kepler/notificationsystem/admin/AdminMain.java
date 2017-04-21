@@ -300,6 +300,8 @@ public class AdminMain extends BaseActivity implements SearchView.OnQueryTextLis
                 Utils.getBatchDialog(AdminMain.this, new OnBatchSelect() {
                     @Override
                     public void onBatchSelect(String course, String batch) {
+                        if (course == null && batch == null)
+                            return;
                         args.putString(Params.COURSE, course);
                         args.putString(Params.BATCH, batch);
                         Utils.startActivity(AdminMain.this, Students.class, args, false);

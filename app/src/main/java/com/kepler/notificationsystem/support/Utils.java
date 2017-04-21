@@ -148,11 +148,11 @@ public class Utils {
 
 
     public static String getType(String course, String batch) {
-        if (course == null || batch == null) {
+//        if (course == null || batch == null) {
             return Config.TOPIC_GLOBAL;
-        } else {
-            return course + "_" + batch;
-        }
+//        } else {
+//            return course + "_" + batch;
+//        }
     }
 
     public static int getYear(int year) {
